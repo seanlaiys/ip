@@ -26,6 +26,10 @@ public class Messages {
 
     private static final String add = "Successfully added:";
 
+    private static final String mark = "You have successfully completed the following task:";
+
+    private static final String unmark = "You requested to mark the following task as undone:";
+
     public static void greetUser() {
         System.out.println(logo);
         System.out.println(greetings);
@@ -46,6 +50,20 @@ public class Messages {
 
     public static String sayAdd(Scanner user_input, String text) {
         System.out.println(add + " " + text);
+        String input = user_input.nextLine();
+        return input;
+    }
+
+    public static String sayMark(Scanner user_input, Task task) {
+        System.out.println(mark);
+        System.out.println(task);
+        String input = user_input.nextLine();
+        return input;
+    }
+
+    public static String sayUnmark(Scanner user_input, Task task) {
+        System.out.println(unmark);
+        System.out.println(task);
         String input = user_input.nextLine();
         return input;
     }
