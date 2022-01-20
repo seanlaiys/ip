@@ -29,6 +29,10 @@ public class Storage {
         return this.tasks.get(taskNumber-1);
     }
 
+    public int getSize() {
+        return this.tasks.size();
+    }
+
     @Override
     public String toString() {
         String list = "";

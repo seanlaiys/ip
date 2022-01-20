@@ -18,17 +18,19 @@ public class Messages {
             "Greetings, my name is Alfred. \n"
                     + "How may I assist you?";
 
-    private static final String list = "Here is your list.";
+    private static final String list = "Here is your task list.";
 
     private static final String blah = "Blah.";
 
     private static final String bye = "It has been pleasant to be at your service. Goodbye.";
 
-    private static final String add = "Successfully added:";
+    private static final String add = "Got it. I've added this task:";
 
     private static final String mark = "You have successfully completed the following task:";
 
     private static final String unmark = "You requested to mark the following task as undone:";
+
+    private static final String taskSize = "Here is the number of tasks in the list:";
 
     public static void greetUser() {
         System.out.println(logo);
@@ -48,8 +50,10 @@ public class Messages {
         return input;
     }
 
-    public static String sayAdd(Scanner user_input, String text) {
-        System.out.println(add + " " + text);
+    public static String sayAdd(Scanner user_input, Task newTask, Storage currentStorage) {
+        System.out.println(add);
+        System.out.println(newTask.toString());
+        System.out.println(taskSize + " " + currentStorage.getSize());
         String input = user_input.nextLine();
         return input;
     }

@@ -26,12 +26,22 @@ public class CommandReader {
                 currentStorage.markTask(taskNumber);
                 Task marked = currentStorage.getTask(taskNumber);
                 input = Messages.sayMark(user_input, marked);
-            } else if (input.equals("")){
-                input = user_input.nextLine();
-            } else {
-                Task newTask = new Task(input);
+            } else if (input.contains(Commands.COMMAND_TODO)){
+                Task newTask = new Task(input, Commands.COMMAND_TODO);
                 currentStorage.addTasks(newTask);
-                input = Messages.sayAdd(user_input, input);
+                input = Messages.sayAdd(user_input, newTask, currentStorage);
+            }  else if (input.contains(Commands.COMMAND_DEADLINE)){
+                String[] inputs = input.split("/");
+                Task newTask = new Task(inputs[0], Commands.COMMAND_DEADLINE, inputs[1]);
+                currentStorage.addTasks(newTask);
+                input = Messages.sayAdd(user_input, newTask, currentStorage);
+            } else if (input.contains(Commands.COMMAND_EVENT)){
+                String[] inputs = input.split("/");
+                Task newTask = new Task(inputs[0], Commands.COMMAND_EVENT, inputs[1]);
+                currentStorage.addTasks(newTask);
+                input = Messages.sayAdd(user_input, newTask, currentStorage);
+            }else {
+                input = user_input.nextLine();
             }
         }
         Messages.sayGoodbye();
