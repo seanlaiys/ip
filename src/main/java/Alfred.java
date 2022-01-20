@@ -1,11 +1,6 @@
-public class Duke {
+public class Alfred{
     public static void main(String[] args) {
-        String logo =
-                  "    __      \n"
-                + "   /  \\    \n"
-                + "  / /\\ \\  \n"
-                + " / /__\\ \\  \n"
-                + "/_/    \\_\\ \n";
-        System.out.println("Hello from\n" + logo);
+        Messages.greetUser();
+        CommandReader.readCommand();
     }
 }
