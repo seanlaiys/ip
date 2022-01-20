@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 /**
  *
@@ -27,20 +28,42 @@ public class CommandReader {
                 Task marked = currentStorage.getTask(taskNumber);
                 input = Messages.sayMark(user_input, marked);
             } else if (input.contains(Commands.COMMAND_TODO)){
-                Task newTask = new Task(input, Commands.COMMAND_TODO);
-                currentStorage.addTasks(newTask);
-                input = Messages.sayAdd(user_input, newTask, currentStorage);
+                String[] descriptions = input.split(Commands.COMMAND_TODO);
+                if (descriptions.length == 0) {
+                    Messages.sayNoDescription();
+                    input = user_input.nextLine();
+                } else {
+                    Task newTask = new Task(input, Commands.COMMAND_TODO);
+                    currentStorage.addTasks(newTask);
+                    input = Messages.sayAdd(user_input, newTask, currentStorage);
+                }
             }  else if (input.contains(Commands.COMMAND_DEADLINE)){
-                String[] inputs = input.split("/");
-                Task newTask = new Task(inputs[0], Commands.COMMAND_DEADLINE, inputs[1]);
-                currentStorage.addTasks(newTask);
-                input = Messages.sayAdd(user_input, newTask, currentStorage);
+                String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
+                if (descriptions.length == 0) {
+                    Messages.sayNoDescription();
+                    input = user_input.nextLine();
+                } else {
+                    String[] inputs = input.split("/");
+                    Task newTask = new Task(inputs[0], Commands.COMMAND_DEADLINE, inputs[1]);
+                    currentStorage.addTasks(newTask);
+                    input = Messages.sayAdd(user_input, newTask, currentStorage);
+                }
             } else if (input.contains(Commands.COMMAND_EVENT)){
-                String[] inputs = input.split("/");
-                Task newTask = new Task(inputs[0], Commands.COMMAND_EVENT, inputs[1]);
-                currentStorage.addTasks(newTask);
-                input = Messages.sayAdd(user_input, newTask, currentStorage);
-            }else {
+                String[] descriptions = input.split(Commands.COMMAND_EVENT);
+                if (descriptions.length == 0) {
+                    Messages.sayNoDescription();
+                    input = user_input.nextLine();
+                } else {
+                    String[] inputs = input.split("/");
+                    Task newTask = new Task(inputs[0], Commands.COMMAND_EVENT, inputs[1]);
+                    currentStorage.addTasks(newTask);
+                    input = Messages.sayAdd(user_input, newTask, currentStorage);
+                }
+            } else if (input.equals("")){
+                Messages.sayEmpty();
+                input = user_input.nextLine();
+            } else {
+                Messages.sayUnsure();
                 input = user_input.nextLine();
             }
         }

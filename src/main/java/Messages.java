@@ -32,6 +32,13 @@ public class Messages {
 
     private static final String taskSize = "Here is the number of tasks in the list:";
 
+    private static final String unsure = "☹ OOPS!!! I'm sorry, " +
+            "but I don't know what that means :-(";
+
+    private static final String empty = "I can't help you if you don't type anything ☹";
+
+    private static final String noDescription = "Please try again with a description in mind ☹";
+
     public static void greetUser() {
         System.out.println(logo);
         System.out.println(greetings);
@@ -70,6 +77,18 @@ public class Messages {
         System.out.println(task);
         String input = user_input.nextLine();
         return input;
+    }
+
+    public static void sayUnsure() {
+        System.out.println(unsure);
+    }
+
+    public static void sayEmpty() {
+        System.out.println(empty);
+    }
+
+    public static void sayNoDescription() {
+        System.out.println(noDescription);
     }
 
     public static void sayGoodbye() {
