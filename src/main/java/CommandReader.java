@@ -59,7 +59,18 @@ public class CommandReader {
                     currentStorage.addTasks(newTask);
                     input = Messages.sayAdd(user_input, newTask, currentStorage);
                 }
-            } else if (input.equals("")){
+            }  else if (input.contains(Commands.COMMAND_DELETE)){
+                String[] descriptions = input.split(Commands.COMMAND_DELETE);
+                if (descriptions.length == 0) {
+                    Messages.sayEmpty();
+                    input = user_input.nextLine();
+                } else {
+                    int taskNumber = findDigit(input);
+                    Task removedTask = currentStorage.getTask(taskNumber);
+                    currentStorage.removeTasks(taskNumber);
+                    input = Messages.sayDelete(user_input, removedTask, currentStorage);
+                }
+            }else if (input.equals("")){
                 Messages.sayEmpty();
                 input = user_input.nextLine();
             } else {

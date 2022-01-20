@@ -13,6 +13,10 @@ public class Storage {
         this.tasks.add(newTask);
     }
 
+    public void removeTasks(int taskNumber) {
+        this.tasks.remove(taskNumber-1);
+    }
+
     public void markTask(int taskNumber) {
         Task selected = this.tasks.get(taskNumber-1);
         selected.mark();

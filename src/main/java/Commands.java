@@ -13,4 +13,5 @@ public class Commands {
     public static final String COMMAND_TODO = "todo";
     public static final String COMMAND_DEADLINE = "deadline";
     public static final String COMMAND_EVENT = "event";
+    public static final String COMMAND_DELETE = "delete";
 }

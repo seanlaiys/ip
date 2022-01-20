@@ -22,9 +22,11 @@ public class Messages {
 
     private static final String blah = "Blah.";
 
-    private static final String bye = "It has been pleasant to be at your service. Goodbye.";
+    private static final String bye = "It has been great pleasure to be at your service. Goodbye.";
 
     private static final String add = "Got it. I've added this task:";
+
+    private static final String delete = "Got it. I've removed this task:";
 
     private static final String mark = "You have successfully completed the following task:";
 
@@ -75,6 +77,14 @@ public class Messages {
     public static String sayUnmark(Scanner user_input, Task task) {
         System.out.println(unmark);
         System.out.println(task);
+        String input = user_input.nextLine();
+        return input;
+    }
+
+    public static String sayDelete(Scanner user_input, Task task, Storage currentStorage) {
+        System.out.println(delete);
+        System.out.println(task.toString());
+        System.out.println(taskSize + " " + currentStorage.getSize());
         String input = user_input.nextLine();
         return input;
     }
