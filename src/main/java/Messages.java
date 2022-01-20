@@ -24,19 +24,28 @@ public class Messages {
 
     private static final String bye = "It has been pleasant to be at your service. Goodbye.";
 
+    private static final String add = "Successfully added:";
+
     public static void greetUser() {
         System.out.println(logo);
         System.out.println(greetings);
     }
 
-    public static String generateList(Scanner user_input) {
+    public static String generateList(Scanner user_input, Storage currentList) {
         System.out.println(list);
+        System.out.println(currentList.toString());
         String input = user_input.nextLine();
         return input;
     }
 
     public static String sayBlah(Scanner user_input) {
         System.out.println(blah);
+        String input = user_input.nextLine();
+        return input;
+    }
+
+    public static String sayAdd(Scanner user_input, String text) {
+        System.out.println(add + " " + text);
         String input = user_input.nextLine();
         return input;
     }
