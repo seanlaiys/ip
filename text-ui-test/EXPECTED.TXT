@@ -1,7 +1,41 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+    __
+   /  \
+  / /\ \
+ / /__\ \
+/_/    \_\
+
+Greetings, my name is Alfred.
+How may I assist you?
+Got it. I've added this task:
+[T][ ] todo find glasses()
+Here is the number of tasks in the list: 1
+Got it. I've added this task:
+[T][ ] todo read book()
+Here is the number of tasks in the list: 2
+Got it. I've added this task:
+[D][ ] deadline return book (by Monday 2pm)
+Here is the number of tasks in the list: 3
+Got it. I've added this task:
+[E][ ] event throw party (at Sunday 7pm)
+Here is the number of tasks in the list: 4
+Here is your task list.
+1.[T][ ] todo find glasses()
+2.[T][ ] todo read book()
+3.[D][ ] deadline return book (by Monday 2pm)
+4.[E][ ] event throw party (at Sunday 7pm)
+
+You have successfully completed the following task:
+[T][X] todo find glasses()
+You have successfully completed the following task:
+[D][X] deadline return book (by Monday 2pm)
+You requested to mark the following task as undone:
+[T][ ] todo find glasses()
+Here is your task list.
+1.[T][ ] todo find glasses()
+2.[T][ ] todo read book()
+3.[D][X] deadline return book (by Monday 2pm)
+4.[E][ ] event throw party (at Sunday 7pm)
+
+It has been pleasant to be at your service. Goodbye.
+
 

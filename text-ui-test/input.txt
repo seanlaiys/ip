@@ -1,0 +1,10 @@
+todo find glasses
+todo read book
+deadline return book /by Monday 2pm
+event throw party /at Sunday 7pm
+list
+mark 1
+mark 3
+unmark 1
+list
+bye
