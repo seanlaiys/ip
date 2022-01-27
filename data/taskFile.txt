@@ -1,4 +1,3 @@
-[D][ ] deadline project (by Sunday 3pm)
-[E][ ] event exam (at Monday 2pm)
-[T][ ] todo find glasses
-[T][X] todo find book
+[T][ ] todo read book
+[D][ ] deadline return book (by: Dec 2 2019 06:00 PM)
+[E][ ] event throw party (at: Dec 12 2022 02:00 PM)
