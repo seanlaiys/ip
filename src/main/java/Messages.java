@@ -40,11 +40,23 @@ public class Messages {
 
     private static final String NO_DESCRIPTION = "Please try again with a description in mind ☹";
 
+    private static final String INVALID_DATE = "Please try again with a valid date and time DD/MM/YYYY HHMM";
+
+    /**
+     * Prints logo and greeting words
+     */
     public static void greetUser() {
         System.out.println(LOGO);
         System.out.println(GREETING);
     }
 
+    /**
+     * Prints list of current tasks and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @param currentTasks the current list of tasks
+     * @return              the next input from the user
+     */
     public static String generateList(Scanner user_input, TaskList currentTasks) {
         System.out.println(LIST);
         System.out.println(currentTasks.toString());
@@ -52,12 +64,26 @@ public class Messages {
         return input;
     }
 
+    /**
+     * Prints Blah and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @return           the next input from the user
+     */
     public static String sayBlah(Scanner user_input) {
         System.out.println(BLAH);
         String input = user_input.nextLine();
         return input;
     }
 
+    /**
+     * Prints the words to signal successful adding of task and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @param newTask      the new task added
+     * @param currentTasks the current list of tasks
+     * @return              the next input from the user
+     */
     public static String sayAdd(Scanner user_input, Task newTask, TaskList currentTasks) {
         System.out.println(ADD);
         System.out.println(newTask.toString());
@@ -66,6 +92,13 @@ public class Messages {
         return input;
     }
 
+    /**
+     * Prints the words to signal successful marking of task and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @param task        the task marked
+     * @return            the next input from the user
+     */
     public static String sayMark(Scanner user_input, Task task) {
         System.out.println(MARK);
         System.out.println(task);
@@ -73,6 +106,13 @@ public class Messages {
         return input;
     }
 
+    /**
+     * Prints the words to signal successful unmarking of task and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @param task       the task unmarked
+     * @return           the next input from the user
+     */
     public static String sayUnmark(Scanner user_input, Task task) {
         System.out.println(UNMARK);
         System.out.println(task);
@@ -80,6 +120,14 @@ public class Messages {
         return input;
     }
 
+    /**
+     * Prints the words to signal successful deleting of task and returns the next input
+     *
+     * @param user_input the Scanner for users to key in more inputs
+     * @param task        the task deleted
+     * @param currentTasks the current list of tasks
+     * @return            the next input from the user
+     */
     public static String sayDelete(Scanner user_input, Task task, TaskList currentTasks) {
         System.out.println(DELETE);
         System.out.println(task.toString());
@@ -88,18 +136,37 @@ public class Messages {
         return input;
     }
 
+    /**
+     * Prints words to indicate uncertainty in user's input
+     */
     public static void sayUnsure() {
         System.out.println(UNSURE);
     }
 
+    /**
+     * Prints words to indicate the user has made an empty input
+     */
     public static void sayEmpty() {
         System.out.println(EMPTY);
     }
 
+    /**
+     * Prints words to indicate the user made no description to the task to be added
+     */
     public static void sayNoDescription() {
         System.out.println(NO_DESCRIPTION);
     }
 
+    /**
+     * Prints words to indicate the user input invalid date
+     */
+    public static void sayInvalidDate() {
+        System.out.println(INVALID_DATE);
+    }
+
+    /**
+     * Prints goodbye words
+     */
     public static void sayGoodbye() {
         System.out.println(BYE);
     }
