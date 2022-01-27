@@ -1,0 +1,4 @@
+[D][ ] deadline project (by Sunday 3pm)
+[E][ ] event exam (at Monday 2pm)
+[T][ ] todo find glasses
+[T][X] todo find book
