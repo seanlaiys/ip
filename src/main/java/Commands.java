@@ -1,6 +1,6 @@
 /**
  *
- * This class contains commands the user could input to invoke methods
+ * Contains commands the user could input to invoke methods
  * to their command
  *
  */
