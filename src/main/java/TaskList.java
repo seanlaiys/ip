@@ -1,42 +1,103 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
-/*
- *
- *  Stores task temporarily
- *
+/**
+ *  Encapsulates a list containing Task objects.
  */
 public class TaskList {
     private ArrayList<Task> tasks;
+
+    /**
+     * Creates a new TaskList object
+     */
     public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
+
+    /**
+     * Adds task object into TaskList
+     *
+     * @param newTask the new Task object to be added
+     *
+     */
     public void addTasks(Task newTask) {
         this.tasks.add(newTask);
     }
 
+    /**
+     * Removes specified task object from TaskList
+     *
+     * @param taskNumber the index of Task object to be removed
+     *
+     */
     public void removeTasks(int taskNumber) {
         this.tasks.remove(taskNumber);
     }
 
+    /**
+     * Marks specified task object from TaskList
+     *
+     * @param taskNumber the index of Task object to be marked
+     *
+     */
     public void markTask(int taskNumber) {
         Task selected = this.tasks.get(taskNumber);
         selected.mark();
         this.tasks.set(taskNumber, selected);
     }
 
+    /**
+     * Unmarks specified task object from TaskList
+     *
+     * @param taskNumber the index of Task object to be unmarked
+     *
+     */
     public void unmarkTask(int taskNumber) {
         Task selected = this.tasks.get(taskNumber);
         selected.unmark();
         this.tasks.set(taskNumber, selected);
     }
 
+    /**
+     * Returns specified task object from TaskList
+     *
+     * @param taskNumber the index of Task object to be returned
+     * @return the Task object specified by the index
+     */
     public Task getTask(int taskNumber) {
         return this.tasks.get(taskNumber);
     }
 
+    /**
+     * Returns specified task object from TaskList
+     *
+     * @param date the date of the tasks
+     * @return the new TaskList of the tasks that fall on a specified date
+     */
+    public TaskList getTasksByDate(LocalDate date) {
+        TaskList newTasks = new TaskList();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task current = tasks.get(i);
+            if (current.getDate().equals(date)) {
+                newTasks.addTasks(current);
+            }
+        }
+        return newTasks;
+    }
+
+    /**
+     * Returns the number of elements TaskList
+     *
+     * @return the number of Task objects in TaskList
+     */
     public int getSize() {
         return this.tasks.size();
     }
 
+    /**
+     * Returns the string representation of the TaskList object
+     *
+     * @return the string listing the elements in TaskList
+     */
     @Override
     public String toString() {
         String list = "";
