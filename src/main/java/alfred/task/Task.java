@@ -3,7 +3,7 @@ package alfred.task;
 import java.time.LocalDate;
 /**
  *
- * This class encapsulates a <code>Task</code> and its status.
+ * This class encapsulates a <code>alfred.task.Task</code> and its status.
  *
  */
 public abstract class Task {
@@ -13,7 +13,7 @@ public abstract class Task {
     protected static final String NOTDONE = "[ ]";
 
     /**
-     * Creates a new <code>Task</code> object.
+     * Creates a new <code>alfred.task.Task</code> object.
      *
      * @param task the task to be added
      */
@@ -23,7 +23,7 @@ public abstract class Task {
     }
 
     /**
-     * Creates a new <code>Task</code> object.
+     * Creates a new <code>alfred.task.Task</code> object.
      *
      * @param task the task to be added
      * @param isDone whether the task is done
@@ -34,14 +34,14 @@ public abstract class Task {
     }
 
     /**
-     * Marks a <code>Task</code> object done.
+     * Marks a <code>alfred.task.Task</code> object done.
      */
     public void mark() {
         this.isDone = true;
     }
 
     /**
-     * Marks a <code>.Task</code> object undone.
+     * Marks a <code>alfred.task.Task</code> object undone.
      */
     public void unmark() {
         this.isDone = false;
