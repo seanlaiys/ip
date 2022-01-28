@@ -48,7 +48,7 @@ public class Alfred{
     }
 
     /**
-     * Invokes the parser and UI that runs the Alfred chatbot.
+     * Invokes the parser and alfred.action.UI that runs the alfred.main.Alfred chatbot.
      */
     public void run() {
         userInterface.greetUser();
