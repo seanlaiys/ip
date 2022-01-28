@@ -2,7 +2,7 @@ import java.time.LocalDate;
 
 /**
  *
- * This class encapsulates a Task and its status.
+ * This class encapsulates a <code>Task</code> and its status.
  *
  */
 public abstract class Task {
@@ -12,7 +12,7 @@ public abstract class Task {
     protected static final String NOTDONE = "[ ]";
 
     /**
-     * Creates a new Task object
+     * Creates a new <code>Task</code> object.
      */
     public Task(String task) {
         this.task = task;
@@ -20,14 +20,14 @@ public abstract class Task {
     }
 
     /**
-     * Marks a Task object done
+     * Marks a <code>Task</code> object done.
      */
     public void mark() {
         this.isDone = true;
     }
 
     /**
-     * Marks a Task object undone
+     * Marks a <code>Task</code> object undone.
      */
     public void unmark() {
         this.isDone = false;

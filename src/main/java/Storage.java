@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 /**
  *
- * Stores the current tasks in an ArrayList.
+ * Stores the current tasks in an <code>ArrayList</code>.
  *
  */
 public class Storage {
@@ -16,7 +16,7 @@ public class Storage {
     private boolean isNew;
 
     /**
-     * Creates a new Storage object
+     * Creates a new Storage object.
      */
     public Storage() {
         this.isNew = true;
@@ -30,7 +30,7 @@ public class Storage {
 
 
     /**
-     * Returns whether the file is new or old
+     * Returns whether the file is new or old.
      *
      * @return a boolean of the file is new
      */
@@ -39,7 +39,7 @@ public class Storage {
     }
 
     /**
-     * Adds strings to a file
+     * Adds strings to a file.
      *
      * @param filePath the String representing the filepath to the file to be appended to
      * @param textToAppend the String to be appended to file
@@ -52,7 +52,7 @@ public class Storage {
     }
 
     /**
-     * Writes strings to a file
+     * Writes strings to a file.
      *
      * @param filePath the String representing the filepath to the file to be written to
      * @param textToAdd the String to be added to file
@@ -65,7 +65,7 @@ public class Storage {
     }
 
     /**
-     * Writes a list of tasks to TaskFile
+     * Writes a list of tasks to TaskFile.
      *
      * @param tasks the list of tasks to be written to TaskFile
      * @throws IOException if an input or output exception occurred
@@ -83,7 +83,7 @@ public class Storage {
     }
 
     /**
-     * Appends a task to TaskFile
+     * Appends a task to TaskFile.
      *
      * @param task the task to be added to TaskFile
      * @throws IOException if an input or output exception occurred
@@ -97,7 +97,7 @@ public class Storage {
     }
 
     /**
-     * Returns a TaskList which contains contents in an existing TaskFile
+     * Returns a TaskList which contains contents in an existing TaskFile.
      *
      * @throws FileNotFoundException if a TaskFile could not be found
      */

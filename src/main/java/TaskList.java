@@ -1,20 +1,22 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 /**
- *  Encapsulates a list containing Task objects.
+ *  Encapsulates a list containing Task objects. <code>TaskList</code> contains
+ *  <code>ArrayList<Task></code>
  */
 public class TaskList {
     private ArrayList<Task> tasks;
 
     /**
-     * Creates a new TaskList object
+     * Creates a new TaskList object.
      */
     public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
 
     /**
-     * Adds task object into TaskList
+     * Adds task object into TaskList. Only a Task object can be passed into
+     * the method, which will be stored in tasks.
      *
      * @param newTask the new Task object to be added
      *
@@ -24,7 +26,7 @@ public class TaskList {
     }
 
     /**
-     * Removes specified task object from TaskList
+     * Removes specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be removed
      *
@@ -34,7 +36,7 @@ public class TaskList {
     }
 
     /**
-     * Marks specified task object from TaskList
+     * Marks specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be marked
      *
@@ -46,7 +48,7 @@ public class TaskList {
     }
 
     /**
-     * Unmarks specified task object from TaskList
+     * Unmarks specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be unmarked
      *
@@ -58,7 +60,7 @@ public class TaskList {
     }
 
     /**
-     * Returns specified task object from TaskList
+     * Returns specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be returned
      * @return the Task object specified by the index
@@ -68,7 +70,7 @@ public class TaskList {
     }
 
     /**
-     * Returns specified task object from TaskList
+     * Returns TaskList containing tasks that fall on the specified date.
      *
      * @param date the date of the tasks
      * @return the new TaskList of the tasks that fall on a specified date
@@ -85,7 +87,7 @@ public class TaskList {
     }
 
     /**
-     * Returns the number of elements TaskList
+     * Returns the number of elements TaskList.
      *
      * @return the number of Task objects in TaskList
      */
@@ -94,7 +96,7 @@ public class TaskList {
     }
 
     /**
-     * Returns the string representation of the TaskList object
+     * Returns the string representation of the TaskList object.
      *
      * @return the string listing the elements in TaskList
      */

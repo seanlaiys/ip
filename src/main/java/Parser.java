@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class Parser {
     /**
      * Takes in input from user which contains keywords to commands
-     * to invoke different methods based on the command given
+     * to invoke different methods based on the command given.
      */
     public static void readCommand() {
         String input;
@@ -150,7 +150,7 @@ public class Parser {
 
     /**
      * Returns the index of the task in the current TaskList
-     * based on the input provided by the user containing a digit
+     * based on the input provided by the user containing a digit.
      *
      * @return an int index of the task
      */
@@ -167,11 +167,10 @@ public class Parser {
     }
 
     /**
-     * Returns the index of the task in the current TaskList
-     * based on the input provided by the user containing a digit
+     * Returns the date based on the input typed in by user.
      *
      * @param input the String input of the LocalDate
-     * @return an int index of the task
+     * @return a LocalDate object of the date input by user
      * @throws IOException if input is invalid
      */
     public static LocalDate getDate(String input) throws IOException {
@@ -182,11 +181,10 @@ public class Parser {
     }
 
     /**
-     * Returns the index of the task in the current TaskList
-     * based on the input provided by the user containing a digit
+     * Returns the time based on the input typed in by user.
      *
      * @param input the String input of the LocalDate
-     * @return an int index of the task
+     * @return a LocalTime object of the date input by user
      * @throws IOException if input is invalid
      */
     public static LocalTime getTime(String input) throws IOException {
@@ -196,6 +194,13 @@ public class Parser {
         return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":" + timeSplits[2] + timeSplits[3]);
     }
 
+    /**
+     * Returns whether a date input by user is valid.
+     *
+     * @param input the String input of the LocalDate
+     * @return a boolean on whether a date input is valid
+     * @throws IOException if input is invalid
+     */
     public static Boolean isValidDate(String input) {
         String[] dateSplits = input.split("/");
         if (dateSplits.length < 3) {
@@ -207,6 +212,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns whether a time input by user is valid.
+     *
+     * @param input the String input of the LocalDate
+     * @return a boolean on whether a time input is valid
+     * @throws IOException if input is invalid
+     */
     public static Boolean isValidTime(String input) {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");

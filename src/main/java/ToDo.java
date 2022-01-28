@@ -1,13 +1,13 @@
 import java.time.LocalDate;
 
 /**
- * Encapsulates a ToDo which inherits from Task
+ * Encapsulates a <code>ToDo</code> which inherits from <code>Task</code>.
  */
 public class ToDo extends Task{
     private static final String TYPE = "[T]";
 
     /**
-     * Creates a new ToDo object
+     * Creates a new ToDo object.
      *
      * @param toDo a description of the event
      */
@@ -16,7 +16,7 @@ public class ToDo extends Task{
     }
 
     /**
-     * Getter for the deadline date
+     * Getter for the deadline date.
      *
      * @return a date of the deadline
      */
@@ -26,7 +26,7 @@ public class ToDo extends Task{
     }
 
     /**
-     * Returns a string representation of the ToDo object
+     * Returns a string representation of the ToDo object.
      *
      * @return a string describing the status and todo
      */

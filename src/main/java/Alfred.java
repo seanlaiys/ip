@@ -1,6 +1,7 @@
 /**
  *
- * Runs the Alfred chatbot.
+ * Runs the Alfred chatbot. When <code>main()</code> is executed, chatbot greets users and invokes
+ * <code>Parser.readCommand()</code> method.
  *
  */
 public class Alfred{

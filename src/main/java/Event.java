@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 /**
- * Encapsulates an Event which inherits from Task
+ * Encapsulates an Event which inherits from Task. Contains date, time and type.
  */
 public class Event extends Task {
     private LocalDate date;
@@ -10,9 +10,9 @@ public class Event extends Task {
     private static final String TYPE = "[E]";
 
     /**
-     * Creates a new Event object
+     * Creates a new Event object.
      *
-     * @param event a description of the event
+     * @param event a description of the event.
      * @param date a date of the event
      */
     public Event(String event, LocalDate date, LocalTime time) {
@@ -22,7 +22,7 @@ public class Event extends Task {
     }
 
     /**
-     * Getter for the event date
+     * Getter for the event date.
      *
      * @return a date of the event
      */
@@ -33,7 +33,7 @@ public class Event extends Task {
 
 
     /**
-     * Returns a string representation of the Event object
+     * Returns a string representation of the Event object.
      *
      * @return a string describing the status, the event and the date
      */

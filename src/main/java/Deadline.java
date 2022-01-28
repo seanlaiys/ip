@@ -2,7 +2,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 /**
- * Encapsulates a Deadline which inherits from Task
+ * Encapsulates a <code>Deadline</code> which inherits from <code>Task</code>. Contains date, time and type.
  */
 public class Deadline extends Task{
     private LocalDate date;
@@ -10,7 +10,7 @@ public class Deadline extends Task{
     private static final String TYPE = "[D]";
 
     /**
-     * Creates a new Deadline object
+     * Creates a new Deadline object.
      *
      * @param deadline a description of the deadline
      * @param date a date of the deadline
@@ -23,7 +23,7 @@ public class Deadline extends Task{
     }
 
     /**
-     * Getter for the deadline date
+     * Getter for the deadline date.
      *
      * @return a date of the deadline
      */
@@ -33,7 +33,7 @@ public class Deadline extends Task{
     }
 
     /**
-     * Returns a string representation of the Deadline object
+     * Returns a string representation of the Deadline object.
      *
      * @return a string describing the status, the deadline and the date
      */

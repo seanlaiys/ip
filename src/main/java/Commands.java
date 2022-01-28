@@ -1,7 +1,7 @@
 /**
  *
  * Contains commands the user could input to invoke methods
- * to their command
+ * to their command.
  *
  */
 public class Commands {
