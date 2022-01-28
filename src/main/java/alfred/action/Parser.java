@@ -96,8 +96,7 @@ public class Parser {
                         throw new InvalidDateException();
                     } else {
                         try {
-                            Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
-                                    getTime(inputs[1]));
+                            Task newTask = new Deadline(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
                             input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
@@ -116,8 +115,7 @@ public class Parser {
                         throw new InvalidDateException();
                     } else {
                         try {
-                            Task newTask = new Event(inputs[0], getDate(inputs[1]),
-                                    getTime(inputs[1]));
+                            Task newTask = new Event(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
                             input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
@@ -151,10 +149,10 @@ public class Parser {
     }
 
     /**
-     * Returns the index of the task in the current action.TaskList
+     * Returns the index of the alfred.task in the current alfred.action.TaskList
      * based on the input provided by the user containing a digit.
      *
-     * @return an int index of the task
+     * @return an int index of the alfred.task
      */
     public static int findDigit(String input) {
         char[] inputChars = input.toCharArray();
@@ -179,8 +177,7 @@ public class Parser {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy M d");
-        return LocalDate.parse(yearSplits[0] + " " + dateSplits[1] + " "
-                + dateSplits[0], formatterDate);
+        return LocalDate.parse(yearSplits[0] + " " + dateSplits[1] + " " + dateSplits[0], formatterDate);
     }
 
     /**
@@ -194,8 +191,7 @@ public class Parser {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
         String[] timeSplits = yearSplits[1].split("");
-        return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":"
-                + timeSplits[2] + timeSplits[3]);
+        return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":" + timeSplits[2] + timeSplits[3]);
     }
 
     /**
