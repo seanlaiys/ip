@@ -1,4 +1,4 @@
-package alfred;
+package alfred.exception;
 
 public class MissingDescriptionException extends AlfredException {
 

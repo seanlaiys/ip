@@ -1,6 +1,6 @@
 package alfred.main;
 
-import alfred.AlfredException;
+import alfred.exception.AlfredException;
 import alfred.action.Parser;
 import alfred.action.Ui;
 /**

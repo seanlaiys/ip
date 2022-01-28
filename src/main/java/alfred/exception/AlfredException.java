@@ -1,4 +1,4 @@
-package alfred;
+package alfred.exception;
 
 public class AlfredException extends Exception {
 

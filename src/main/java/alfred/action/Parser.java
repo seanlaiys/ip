@@ -1,6 +1,6 @@
 package alfred.action;
 
-import alfred.*;
+import alfred.exception.*;
 import alfred.task.Deadline;
 import alfred.task.Event;
 import alfred.task.Task;
