@@ -25,13 +25,13 @@ public class Ui {
 
     private static final String BYE = "It has been great pleasure to be at your service. Goodbye.";
 
-    private static final String ADD = "Got it. I've added this alfred.task:";
+    private static final String ADD = "Got it. I've added this task:";
 
-    private static final String DELETE = "Got it. I've removed this alfred.task:";
+    private static final String DELETE = "Got it. I've removed this task:";
 
-    private static final String MARK = "You have successfully completed the following alfred.task:";
+    private static final String MARK = "You have successfully completed the following task:";
 
-    private static final String UNMARK = "You requested to mark the following alfred.task as undone:";
+    private static final String UNMARK = "You requested to mark the following task as undone:";
 
     private static final String TASK_SIZE = "Here is the number of tasks in the list:";
 
@@ -72,10 +72,10 @@ public class Ui {
     }
 
     /**
-     * Prints the words to signal successful adding of alfred.task and returns the next input.
+     * Prints the words to signal successful adding of task and returns the next input.
      *
      * @param user_input the Scanner for users to key in more inputs
-     * @param newTask      the new alfred.task added
+     * @param newTask      the new task added
      * @param currentTasks the current list of tasks
      * @return              the next input from the user
      */
@@ -88,10 +88,10 @@ public class Ui {
     }
 
     /**
-     * Prints the words to signal successful marking of alfred.task and returns the next input.
+     * Prints the words to signal successful marking of task and returns the next input.
      *
      * @param user_input the Scanner for users to key in more inputs
-     * @param task        the alfred.task marked
+     * @param task        the task marked
      * @return            the next input from the user
      */
     public static String sayMark(Scanner user_input, Task task) {
@@ -102,10 +102,10 @@ public class Ui {
     }
 
     /**
-     * Prints the words to signal successful unmarking of alfred.task and returns the next input.
+     * Prints the words to signal successful unmarking of task and returns the next input.
      *
      * @param user_input the Scanner for users to key in more inputs
-     * @param task       the alfred.task unmarked
+     * @param task       the task unmarked
      * @return           the next input from the user
      */
     public static String sayUnmark(Scanner user_input, Task task) {
@@ -116,10 +116,10 @@ public class Ui {
     }
 
     /**
-     * Prints the words to signal successful deleting of alfred.task and returns the next input.
+     * Prints the words to signal successful deleting of task and returns the next input.
      *
      * @param user_input the Scanner for users to key in more inputs
-     * @param task        the alfred.task deleted
+     * @param task        the task deleted
      * @param currentTasks the current list of tasks
      * @return            the next input from the user
      */

@@ -22,7 +22,7 @@ public class Storage {
     private boolean isNew;
 
     /**
-     * Creates a new alfred.action.Storage object.
+     * Creates a new Storage object.
      */
     public Storage() {
         this.isNew = true;
@@ -90,9 +90,9 @@ public class Storage {
     }
 
     /**
-     * Appends a alfred.task to TaskFile.
+     * Appends a task to TaskFile.
      *
-     * @param task the alfred.task to be added to TaskFile
+     * @param task the task to be added to TaskFile
      * @throws IOException if an input or output exception occurred
      */
     public void appendTaskToFile(Task task) throws IOException {

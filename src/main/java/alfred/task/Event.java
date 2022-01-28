@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 /**
- * Encapsulates an alfred.task.Event which inherits from alfred.task.Task. Contains date, time and type.
+ * Encapsulates an Event which inherits from Task. Contains date, time and type.
  */
 public class Event extends Task {
     private LocalDate date;
@@ -12,7 +12,7 @@ public class Event extends Task {
     private static final String TYPE = "[E]";
 
     /**
-     * Creates a new alfred.task.Event object.
+     * Creates a new Event object.
      *
      * @param event a description of the event.
      * @param date a date of the event
@@ -24,7 +24,7 @@ public class Event extends Task {
     }
 
     /**
-     * Creates a new alfred.task.Event object.
+     * Creates a new Event object.
      *
      * @param event a description of the event.
      * @param date a date of the event
@@ -48,7 +48,7 @@ public class Event extends Task {
 
 
     /**
-     * Returns a string representation of the alfred.task.Event object.
+     * Returns a string representation of the Event object.
      *
      * @return a string describing the status, the event and the date
      */

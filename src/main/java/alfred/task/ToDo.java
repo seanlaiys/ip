@@ -2,13 +2,13 @@ package alfred.task;
 
 import java.time.LocalDate;
 /**
- * Encapsulates a <code>alfred.task.ToDo</code> which inherits from <code>alfred.task.Task</code>.
+ * Encapsulates a <code>ToDo</code> which inherits from <code>Task</code>.
  */
 public class ToDo extends Task {
     private static final String TYPE = "[T]";
 
     /**
-     * Creates a new alfred.task.ToDo object.
+     * Creates a new ToDo object.
      *
      * @param toDo a description of the event
      */
@@ -17,7 +17,7 @@ public class ToDo extends Task {
     }
 
     /**
-     * Creates a new alfred.task.ToDo object.
+     * Creates a new ToDo object.
      *
      * @param toDo a description of the todo
      * @param isDone whether the todo is done
@@ -37,7 +37,7 @@ public class ToDo extends Task {
     }
 
     /**
-     * Returns a string representation of the alfred.task.ToDo object.
+     * Returns a string representation of the ToDo object.
      *
      * @return a string describing the status and todo
      */
