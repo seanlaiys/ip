@@ -26,7 +26,8 @@ public class Storage {
      */
     public Storage() {
         this.isNew = true;
-        this.taskFile = new File("data/taskFile.txt");
+        this.taskFile = new File( "taskFile.txt");
+        this.taskFile = new File(this.taskFile.getAbsolutePath());
         try {
             this.isNew = this.taskFile.createNewFile();
         } catch (IOException e) {

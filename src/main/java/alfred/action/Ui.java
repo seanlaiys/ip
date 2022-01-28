@@ -19,7 +19,7 @@ public class Ui {
     private static final String GREETING =
             "Greetings, my name is alfred.main.Alfred. \n" + "How may I assist you?";
 
-    private static final String LIST = "Here is your alfred.task list.";
+    private static final String LIST = "Here is your list.";
 
     private static final String BLAH = "Blah.";
 

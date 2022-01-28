@@ -25,6 +25,7 @@ public class Parser {
     public static void parseCommand() throws AlfredException {
         String input;
         TaskList currentTasks = new TaskList();
+        String homePath = System.getProperty("user.home");
         Storage currentStorage = new Storage();
         if (!currentStorage.isNewFile()) {
             try {
