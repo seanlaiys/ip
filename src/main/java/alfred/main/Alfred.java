@@ -22,6 +22,9 @@ public class Alfred{
         this.parser = new Parser();
     }
 
+    /**
+     * Reruns the command parse with warning.
+     */
     private void reRunWithWarning() {
         try {
             parser.parseCommand();
@@ -32,6 +35,9 @@ public class Alfred{
         }
     }
 
+    /**
+     * Reruns the command parse before exiting with another error.
+     */
     private void reRunFinal() {
         try {
             parser.parseCommand();
