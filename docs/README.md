@@ -12,9 +12,9 @@ Description of the feature.
 
 ## Usage
 
-### `Keyword` - Describe action
+### `Keyword` - Describe alfred.action
 
-Describe the action and its outcome.
+Describe the alfred.action and its outcome.
 
 Example of usage: 
 

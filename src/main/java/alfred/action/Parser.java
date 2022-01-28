@@ -1,3 +1,10 @@
+package alfred.action;
+
+import alfred.*;
+import alfred.task.Deadline;
+import alfred.task.Event;
+import alfred.task.Task;
+import alfred.task.ToDo;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +22,7 @@ public class Parser {
      * Takes in input from user which contains keywords to commands
      * to invoke different methods based on the command given.
      */
-    public static void readCommand() {
+    public static void parseCommand() throws AlfredException {
         String input;
         TaskList currentTasks = new TaskList();
         Storage currentStorage = new Storage();
@@ -35,20 +42,20 @@ public class Parser {
                         try {
                             LocalDate date = getDate(inputs[1]);
                             TaskList newTasks = currentTasks.getTasksByDate(date);
-                            input = Messages.generateList(user_input, newTasks);
+                            input = Ui.generateList(user_input, newTasks);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                 } else {
-                    input = Messages.generateList(user_input, currentTasks);
+                    input = Ui.generateList(user_input, currentTasks);
                 }
             } else if (input.contains(Commands.COMMAND_BLAH)) {
-                input = Messages.sayBlah(user_input);
+                input = Ui.sayBlah(user_input);
             } else if (input.contains(Commands.COMMAND_UNMARK)){
                 int taskNumber = findDigit(input);
                 currentTasks.unmarkTask(taskNumber);
                 Task unmarked = currentTasks.getTask(taskNumber);
-                input = Messages.sayUnmark(user_input, unmarked);
+                input = Ui.sayUnmark(user_input, unmarked);
                 try {
                     currentStorage.writeTasksToFile(currentTasks);
                 } catch (IOException e) {
@@ -58,7 +65,7 @@ public class Parser {
                 int taskNumber = findDigit(input);
                 currentTasks.markTask(taskNumber);
                 Task marked = currentTasks.getTask(taskNumber);
-                input = Messages.sayMark(user_input, marked);
+                input = Ui.sayMark(user_input, marked);
                 try {
                     currentStorage.writeTasksToFile(currentTasks);
                 } catch (IOException e) {
@@ -67,12 +74,11 @@ public class Parser {
             } else if (input.contains(Commands.COMMAND_TODO)){
                 String[] descriptions = input.split(Commands.COMMAND_TODO);
                 if (descriptions.length == 0) {
-                    Messages.sayNoDescription();
-                    input = user_input.nextLine();
+                    throw new MissingDescriptionException();
                 } else {
                     Task newTask = new ToDo(input);
                     currentTasks.addTasks(newTask);
-                    input = Messages.sayAdd(user_input, newTask, currentTasks);
+                    input = Ui.sayAdd(user_input, newTask, currentTasks);
                     try {
                         currentStorage.appendTaskToFile(newTask);
                     } catch (IOException e) {
@@ -82,18 +88,16 @@ public class Parser {
             }  else if (input.contains(Commands.COMMAND_DEADLINE)){
                 String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
                 if (descriptions.length == 0) {
-                    Messages.sayNoDescription();
-                    input = user_input.nextLine();
+                    throw new MissingDescriptionException();
                 } else {
                     String[] inputs = input.split("/by ");
                     if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                        Messages.sayInvalidDate();
-                        input = user_input.nextLine();
+                        throw new InvalidDateException();
                     } else {
                         try {
                             Task newTask = new Deadline(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
-                            input = Messages.sayAdd(user_input, newTask, currentTasks);
+                            input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -103,18 +107,16 @@ public class Parser {
             } else if (input.contains(Commands.COMMAND_EVENT)){
                 String[] descriptions = input.split(Commands.COMMAND_EVENT);
                 if (descriptions.length == 0) {
-                    Messages.sayNoDescription();
-                    input = user_input.nextLine();
+                    throw new MissingDescriptionException();
                 } else {
                     String[] inputs = input.split("/at ");
                     if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                        Messages.sayInvalidDate();
-                        input = user_input.nextLine();
+                        throw new InvalidDateException();
                     } else {
                         try {
                             Task newTask = new Event(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
-                            input = Messages.sayAdd(user_input, newTask, currentTasks);
+                            input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -124,13 +126,12 @@ public class Parser {
             }  else if (input.contains(Commands.COMMAND_DELETE)){
                 String[] descriptions = input.split(Commands.COMMAND_DELETE);
                 if (descriptions.length == 0) {
-                    Messages.sayEmpty();
-                    input = user_input.nextLine();
+                    throw new EmptyInputException();
                 } else {
                     int taskNumber = findDigit(input);
                     Task removedTask = currentTasks.getTask(taskNumber);
                     currentTasks.removeTasks(taskNumber);
-                    input = Messages.sayDelete(user_input, removedTask, currentTasks);
+                    input = Ui.sayDelete(user_input, removedTask, currentTasks);
                     try {
                         currentStorage.writeTasksToFile(currentTasks);
                     } catch (IOException e) {
@@ -138,21 +139,19 @@ public class Parser {
                     }
                 }
             } else if (input.equals("")) {
-                Messages.sayEmpty();
-                input = user_input.nextLine();
+                throw new EmptyInputException();
             } else {
-                Messages.sayUnsure();
-                input = user_input.nextLine();
+                throw new InvalidInputException();
             }
         }
-        Messages.sayGoodbye();
+        Ui.sayGoodbye();
     }
 
     /**
-     * Returns the index of the task in the current TaskList
+     * Returns the index of the alfred.task in the current alfred.action.TaskList
      * based on the input provided by the user containing a digit.
      *
-     * @return an int index of the task
+     * @return an int index of the alfred.task
      */
     public static int findDigit(String input) {
         char[] inputChars = input.toCharArray();

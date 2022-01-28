@@ -1,3 +1,5 @@
+package alfred.action;
+
 /**
  *
  * Contains commands the user could input to invoke methods

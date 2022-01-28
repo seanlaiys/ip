@@ -1,3 +1,9 @@
+package alfred.action;
+
+import alfred.task.Deadline;
+import alfred.task.Event;
+import alfred.task.Task;
+import alfred.task.ToDo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,7 +22,7 @@ public class Storage {
     private boolean isNew;
 
     /**
-     * Creates a new Storage object.
+     * Creates a new alfred.action.Storage object.
      */
     public Storage() {
         this.isNew = true;
@@ -83,9 +89,9 @@ public class Storage {
     }
 
     /**
-     * Appends a task to TaskFile.
+     * Appends a alfred.task to TaskFile.
      *
-     * @param task the task to be added to TaskFile
+     * @param task the alfred.task to be added to TaskFile
      * @throws IOException if an input or output exception occurred
      */
     public void appendTaskToFile(Task task) throws IOException {
@@ -97,7 +103,7 @@ public class Storage {
     }
 
     /**
-     * Returns a TaskList which contains contents in an existing TaskFile.
+     * Returns a alfred.action.TaskList which contains contents in an existing TaskFile.
      *
      * @throws FileNotFoundException if a TaskFile could not be found
      */
@@ -109,7 +115,8 @@ public class Storage {
             current = s.nextLine();
             if (current.contains(Commands.COMMAND_TODO)){
                 String[] descriptions = current.split(Commands.COMMAND_TODO);
-                Task newTask = new ToDo(Commands.COMMAND_TODO + descriptions[1]);
+                Task newTask = new ToDo(Commands.COMMAND_TODO + descriptions[1],
+                        current.contains("[X]"));
                 tasks.addTasks(newTask);
             } else if (current.contains(Commands.COMMAND_EVENT)){
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
@@ -124,7 +131,8 @@ public class Storage {
                 DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
                 LocalDate newDate = LocalDate.parse(date, formatterDate);
                 LocalTime newTime = LocalTime.parse(time, formatterTime);
-                Task newTask = new Event(Commands.COMMAND_EVENT + newDescriptions[0], newDate, newTime);
+                Task newTask = new Event(Commands.COMMAND_EVENT + newDescriptions[0],
+                        newDate, newTime, current.contains("[X]"));
                 tasks.addTasks(newTask);
             } else {
                 String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
@@ -139,7 +147,8 @@ public class Storage {
                 DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
                 LocalDate newDate = LocalDate.parse(date, formatterDate);
                 LocalTime newTime = LocalTime.parse(time, formatterTime);
-                Task newTask = new Event(Commands.COMMAND_DEADLINE + newDescriptions[0], newDate, newTime);
+                Task newTask = new Deadline(Commands.COMMAND_DEADLINE + newDescriptions[0],
+                        newDate, newTime, current.contains("[X]"));
                 tasks.addTasks(newTask);
             }
         }

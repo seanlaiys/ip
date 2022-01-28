@@ -4,33 +4,33 @@
  / /__\ \
 /_/    \_\
 
-Greetings, my name is Alfred.
+Greetings, my name is alfred.main.Alfred.
 How may I assist you?
-Got it. I've added this task:
+Got it. I've added this alfred.task:
 [T][ ] todo find glasses()
 Here is the number of tasks in the list: 1
-Got it. I've added this task:
+Got it. I've added this alfred.task:
 [T][ ] todo read book()
 Here is the number of tasks in the list: 2
-Got it. I've added this task:
+Got it. I've added this alfred.task:
 [D][ ] deadline return book (by Monday 2pm)
 Here is the number of tasks in the list: 3
-Got it. I've added this task:
+Got it. I've added this alfred.task:
 [E][ ] event throw party (at Sunday 7pm)
 Here is the number of tasks in the list: 4
-Here is your task list.
+Here is your alfred.task list.
 1.[T][ ] todo find glasses()
 2.[T][ ] todo read book()
 3.[D][ ] deadline return book (by Monday 2pm)
 4.[E][ ] event throw party (at Sunday 7pm)
 
-You have successfully completed the following task:
+You have successfully completed the following alfred.task:
 [T][X] todo find glasses()
-You have successfully completed the following task:
+You have successfully completed the following alfred.task:
 [D][X] deadline return book (by Monday 2pm)
-You requested to mark the following task as undone:
+You requested to mark the following alfred.task as undone:
 [T][ ] todo find glasses()
-Here is your task list.
+Here is your alfred.task list.
 1.[T][ ] todo find glasses()
 2.[T][ ] todo read book()
 3.[D][X] deadline return book (by Monday 2pm)
