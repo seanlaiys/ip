@@ -47,5 +47,18 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    /**
+     * Returns whether the task contains a given keyword.
+     *
+     * @param keyword keyword input by user
+     * @return a boolean of whether the task contains the keyword
+     */
+    public boolean contains(String keyword) {
+        if (task.contains(keyword)) {
+            return true;
+        }
+        return false;
+    }
+
     public abstract LocalDate getDate();
 }

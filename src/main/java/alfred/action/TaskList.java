@@ -91,6 +91,23 @@ public class TaskList {
     }
 
     /**
+     * Returns TaskList containing tasks that contain keyword input by user.
+     *
+     * @param keyword keyword input by user
+     * @return the new TaskList of the tasks that has the given keyword
+     */
+    public TaskList getTasksByKeyWord(String keyword) {
+        TaskList newTasks = new TaskList();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task current = tasks.get(i);
+            if (current.contains(keyword)) {
+                newTasks.addTasks(current);
+            }
+        }
+        return newTasks;
+    }
+
+    /**
      * Returns the number of elements TaskList.
      *
      * @return the number of Task objects in TaskList

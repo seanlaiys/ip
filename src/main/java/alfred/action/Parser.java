@@ -50,6 +50,15 @@ public class Parser {
                 } else {
                     input = Ui.generateList(user_input, currentTasks);
                 }
+            } else if (input.contains(Commands.COMMAND_FIND)) {
+                String[] descriptions = input.split(Commands.COMMAND_FIND);
+                if (descriptions.length == 0) {
+                    throw new EmptyInputException();
+                } else {
+                    TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
+                    input = Ui.generateList(user_input, result);
+
+                }
             } else if (input.contains(Commands.COMMAND_BLAH)) {
                 input = Ui.sayBlah(user_input);
             } else if (input.contains(Commands.COMMAND_UNMARK)) {
@@ -86,7 +95,7 @@ public class Parser {
                         e.printStackTrace();
                     }
                 }
-            }  else if (input.contains(Commands.COMMAND_DEADLINE)) {
+            } else if (input.contains(Commands.COMMAND_DEADLINE)) {
                 String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
                 if (descriptions.length == 0) {
                     throw new MissingDescriptionException();
@@ -126,7 +135,7 @@ public class Parser {
                         }
                     }
                 }
-            }  else if (input.contains(Commands.COMMAND_DELETE)) {
+            } else if (input.contains(Commands.COMMAND_DELETE)) {
                 String[] descriptions = input.split(Commands.COMMAND_DELETE);
                 if (descriptions.length == 0) {
                     throw new EmptyInputException();
