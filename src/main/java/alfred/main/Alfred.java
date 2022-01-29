@@ -61,7 +61,7 @@ public class Alfred{
     }
 
     /**
-     * This method executes the run method which runs the alfred.main.Alfred chatbot.
+     * This method executes the run method which runs the Alfred chatbot.
      */
     public static void main(String[] args) {
         new Alfred().run();
