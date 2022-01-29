@@ -22,7 +22,7 @@ public class Storage {
     private boolean isNew;
 
     /**
-     * Creates a new alfred.action.Storage object.
+     * Creates a new Storage object.
      */
     public Storage() {
         this.isNew = true;
@@ -90,9 +90,9 @@ public class Storage {
     }
 
     /**
-     * Appends a alfred.task to TaskFile.
+     * Appends a task to TaskFile.
      *
-     * @param task the alfred.task to be added to TaskFile
+     * @param task the task to be added to TaskFile
      * @throws IOException if an input or output exception occurred
      */
     public void appendTaskToFile(Task task) throws IOException {
@@ -104,7 +104,7 @@ public class Storage {
     }
 
     /**
-     * Returns a alfred.action.TaskList which contains contents in an existing TaskFile.
+     * Returns a TaskList which contains contents in an existing TaskFile.
      *
      * @throws FileNotFoundException if a TaskFile could not be found
      */
@@ -114,12 +114,12 @@ public class Storage {
         TaskList tasks = new TaskList();
         while (s.hasNext()) {
             current = s.nextLine();
-            if (current.contains(Commands.COMMAND_TODO)){
+            if (current.contains(Commands.COMMAND_TODO)) {
                 String[] descriptions = current.split(Commands.COMMAND_TODO);
                 Task newTask = new ToDo(Commands.COMMAND_TODO + descriptions[1],
                         current.contains("[X]"));
                 tasks.addTasks(newTask);
-            } else if (current.contains(Commands.COMMAND_EVENT)){
+            } else if (current.contains(Commands.COMMAND_EVENT)) {
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
                 String OPEN_BRAC = "\\(";
                 String CLOSE_BRAC = "\\)";

@@ -5,9 +5,9 @@ import alfred.action.Parser;
 import alfred.action.Ui;
 /**
  *
- * Encapsulates the alfred.main.Alfred chatbot with a method to run it.
- * When <code>alfred.main()</code> is executed, chatbot greets users
- * and invokes <code>alfred.action.Parser.readCommand()</code> method.
+ * Encapsulates the Alfred chatbot with a method to run it.
+ * When <code>main()</code> is executed, chatbot greets users
+ * and invokes <code>Parser.readCommand()</code> method.
  *
  */
 public class Alfred{
@@ -15,7 +15,7 @@ public class Alfred{
     private Parser parser;
 
     /**
-     * Creates a new alfred.main.Alfred object.
+     * Creates a new Alfred object.
      */
     public Alfred() {
         this.userInterface = new Ui();
@@ -48,7 +48,7 @@ public class Alfred{
     }
 
     /**
-     * Invokes the parser and alfred.action.UI that runs the alfred.main.Alfred chatbot.
+     * Invokes the parser and UI that runs the Alfred chatbot.
      */
     public void run() {
         userInterface.greetUser();

@@ -52,7 +52,7 @@ public class Parser {
                 }
             } else if (input.contains(Commands.COMMAND_BLAH)) {
                 input = Ui.sayBlah(user_input);
-            } else if (input.contains(Commands.COMMAND_UNMARK)){
+            } else if (input.contains(Commands.COMMAND_UNMARK)) {
                 int taskNumber = findDigit(input);
                 currentTasks.unmarkTask(taskNumber);
                 Task unmarked = currentTasks.getTask(taskNumber);
@@ -62,7 +62,7 @@ public class Parser {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (input.contains(Commands.COMMAND_MARK)){
+            } else if (input.contains(Commands.COMMAND_MARK)) {
                 int taskNumber = findDigit(input);
                 currentTasks.markTask(taskNumber);
                 Task marked = currentTasks.getTask(taskNumber);
@@ -72,7 +72,7 @@ public class Parser {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (input.contains(Commands.COMMAND_TODO)){
+            } else if (input.contains(Commands.COMMAND_TODO)) {
                 String[] descriptions = input.split(Commands.COMMAND_TODO);
                 if (descriptions.length == 0) {
                     throw new MissingDescriptionException();
@@ -86,7 +86,7 @@ public class Parser {
                         e.printStackTrace();
                     }
                 }
-            }  else if (input.contains(Commands.COMMAND_DEADLINE)){
+            }  else if (input.contains(Commands.COMMAND_DEADLINE)) {
                 String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
                 if (descriptions.length == 0) {
                     throw new MissingDescriptionException();
@@ -96,7 +96,8 @@ public class Parser {
                         throw new InvalidDateException();
                     } else {
                         try {
-                            Task newTask = new Deadline(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
+                            Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
+                                    getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
                             input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
@@ -105,7 +106,7 @@ public class Parser {
                         }
                     }
                 }
-            } else if (input.contains(Commands.COMMAND_EVENT)){
+            } else if (input.contains(Commands.COMMAND_EVENT)) {
                 String[] descriptions = input.split(Commands.COMMAND_EVENT);
                 if (descriptions.length == 0) {
                     throw new MissingDescriptionException();
@@ -115,7 +116,8 @@ public class Parser {
                         throw new InvalidDateException();
                     } else {
                         try {
-                            Task newTask = new Event(inputs[0], getDate(inputs[1]), getTime(inputs[1]));
+                            Task newTask = new Event(inputs[0], getDate(inputs[1]),
+                                    getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
                             input = Ui.sayAdd(user_input, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
@@ -124,7 +126,7 @@ public class Parser {
                         }
                     }
                 }
-            }  else if (input.contains(Commands.COMMAND_DELETE)){
+            }  else if (input.contains(Commands.COMMAND_DELETE)) {
                 String[] descriptions = input.split(Commands.COMMAND_DELETE);
                 if (descriptions.length == 0) {
                     throw new EmptyInputException();
@@ -149,16 +151,16 @@ public class Parser {
     }
 
     /**
-     * Returns the index of the alfred.task in the current alfred.action.TaskList
+     * Returns the index of the task in the current action.TaskList
      * based on the input provided by the user containing a digit.
      *
-     * @return an int index of the alfred.task
+     * @return an int index of the task
      */
     public static int findDigit(String input) {
         char[] inputChars = input.toCharArray();
         String number = "";
         for(char ch : inputChars) {
-            if(Character.isDigit(ch)){
+            if(Character.isDigit(ch)) {
                 number += ch;
             }
         }
@@ -177,7 +179,8 @@ public class Parser {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy M d");
-        return LocalDate.parse(yearSplits[0] + " " + dateSplits[1] + " " + dateSplits[0], formatterDate);
+        return LocalDate.parse(yearSplits[0] + " " + dateSplits[1] + " "
+                + dateSplits[0], formatterDate);
     }
 
     /**
@@ -191,7 +194,8 @@ public class Parser {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
         String[] timeSplits = yearSplits[1].split("");
-        return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":" + timeSplits[2] + timeSplits[3]);
+        return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":"
+                + timeSplits[2] + timeSplits[3]);
     }
 
     /**

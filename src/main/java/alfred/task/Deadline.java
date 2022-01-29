@@ -4,7 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 /**
- * Encapsulates a <code>alfred.task.Deadline</code> which inherits from <code>alfred.task.Task</code>. Contains date, time and type.
+ * Encapsulates a <code>Deadline</code> which inherits from <codeTask</code>.
+ * Contains date, time and type.
  */
 public class Deadline extends Task {
     private LocalDate date;
@@ -12,7 +13,7 @@ public class Deadline extends Task {
     private static final String TYPE = "[D]";
 
     /**
-     * Creates a new alfred.task.Deadline object.
+     * Creates a new Deadline object.
      *
      * @param deadline a description of the deadline
      * @param date a date of the deadline
@@ -25,7 +26,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Creates a new alfred.task.Deadline object.
+     * Creates a new Deadline object.
      *
      * @param deadline a description of the deadline
      * @param date a date of the deadline
@@ -50,14 +51,15 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns a string representation of the alfred.task.Deadline object.
+     * Returns a string representation of the Deadline object.
      *
      * @return a string describing the status, the deadline and the date
      */
     @Override
     public String toString() {
         String status = isDone ? Task.DONE : Task.NOTDONE;
-        return TYPE + status + " " + task + "(by: " + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
+        return TYPE + status + " " + task + "(by: "
+                + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
                 + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a"))+ ")";
     }
 }
