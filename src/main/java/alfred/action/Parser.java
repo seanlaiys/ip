@@ -1,12 +1,10 @@
 package alfred.action;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 import alfred.exception.AlfredException;
 import alfred.exception.EmptyInputException;
@@ -22,14 +20,23 @@ import alfred.task.ToDo;
  * and invokes methods in response to what the user has keyed in.
  */
 public class Parser {
+
+private static TaskList currentTasks;
+private static Storage currentStorage;
+
+    /**
+     * Creates new Parser object.
+     */
+    public Parser() {
+        currentTasks = new TaskList();
+        currentStorage = new Storage();
+    }
+
     /**
      * Takes in input from user which contains keywords to commands
      * to invoke different methods based on the command given.
      */
-    public static void parseCommand() throws AlfredException {
-        String input;
-        TaskList currentTasks = new TaskList();
-        Storage currentStorage = new Storage();
+    public static void parseCommand(String input, Ui userInterface) throws AlfredException {
         if (!currentStorage.isNewFile()) {
             try {
                 currentTasks = currentStorage.fileToTaskList();
@@ -37,129 +44,126 @@ public class Parser {
                 e.printStackTrace();
             }
         }
-        Scanner userInput = new Scanner(System.in);
-        input = userInput.nextLine();
-        while (!input.equals(Commands.COMMAND_BYE)) {
-            if (input.contains(Commands.COMMAND_LIST)) {
-                if (input.contains("/on")) {
-                    String[] inputs = input.split("/on ");
-                    try {
-                        LocalDate date = getDate(inputs[1]);
-                        TaskList newTasks = currentTasks.getTasksByDate(date);
-                        input = Ui.generateList(userInput, newTasks);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    input = Ui.generateList(userInput, currentTasks);
+        if (input.contains(Commands.COMMAND_LIST)) {
+            if (input.contains("/on")) {
+                String[] inputs = input.split("/on ");
+                try {
+                    LocalDate date = getDate(inputs[1]);
+                    TaskList newTasks = currentTasks.getTasksByDate(date);
+                    userInterface.generateList(newTasks);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } else if (input.contains(Commands.COMMAND_FIND)) {
-                String[] descriptions = input.split(Commands.COMMAND_FIND);
-                if (descriptions.length == 0) {
-                    throw new EmptyInputException();
-                } else {
-                    TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
-                    input = Ui.generateList(userInput, result);
+            } else {
+                userInterface.generateList(currentTasks);
+            }
+        } else if (input.contains(Commands.COMMAND_FIND)) {
+            String[] descriptions = input.split(Commands.COMMAND_FIND);
+            if (descriptions.length == 0) {
+                throw new EmptyInputException();
+            } else {
+                TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
+                userInterface.generateList(result);
 
-                }
-            } else if (input.contains(Commands.COMMAND_BLAH)) {
-                input = Ui.sayBlah(userInput);
-            } else if (input.contains(Commands.COMMAND_UNMARK)) {
-                int taskNumber = findDigit(input);
-                currentTasks.unmarkTask(taskNumber);
-                Task unmarked = currentTasks.getTask(taskNumber);
-                input = Ui.sayUnmark(userInput, unmarked);
+            }
+        } else if (input.contains(Commands.COMMAND_BLAH)) {
+            userInterface.sayBlah();
+        } else if (input.contains(Commands.COMMAND_UNMARK)) {
+            int taskNumber = findDigit(input);
+            currentTasks.unmarkTask(taskNumber);
+            Task unmarked = currentTasks.getTask(taskNumber);
+            userInterface.sayUnmark(unmarked);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_MARK)) {
+            int taskNumber = findDigit(input);
+            currentTasks.markTask(taskNumber);
+            Task marked = currentTasks.getTask(taskNumber);
+            userInterface.sayMark(marked);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_TODO)) {
+            String[] descriptions = input.split(Commands.COMMAND_TODO);
+            if (descriptions.length == 0) {
+                throw new MissingDescriptionException();
+            } else {
+                Task newTask = new ToDo(input);
+                currentTasks.addTasks(newTask);
+                userInterface.sayAdd(newTask, currentTasks);
                 try {
-                    currentStorage.writeTasksToFile(currentTasks);
+                    currentStorage.appendTaskToFile(newTask);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (input.contains(Commands.COMMAND_MARK)) {
-                int taskNumber = findDigit(input);
-                currentTasks.markTask(taskNumber);
-                Task marked = currentTasks.getTask(taskNumber);
-                input = Ui.sayMark(userInput, marked);
-                try {
-                    currentStorage.writeTasksToFile(currentTasks);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (input.contains(Commands.COMMAND_TODO)) {
-                String[] descriptions = input.split(Commands.COMMAND_TODO);
-                if (descriptions.length == 0) {
-                    throw new MissingDescriptionException();
+            }
+        } else if (input.contains(Commands.COMMAND_DEADLINE)) {
+            String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
+            if (descriptions.length == 0) {
+                throw new MissingDescriptionException();
+            } else {
+                String[] inputs = input.split("/by ");
+                if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
+                    throw new InvalidDateException();
                 } else {
-                    Task newTask = new ToDo(input);
-                    currentTasks.addTasks(newTask);
-                    input = Ui.sayAdd(userInput, newTask, currentTasks);
                     try {
+                        Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
+                                getTime(inputs[1]));
+                        currentTasks.addTasks(newTask);
+                        userInterface.sayAdd(newTask, currentTasks);
                         currentStorage.appendTaskToFile(newTask);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            } else if (input.contains(Commands.COMMAND_DEADLINE)) {
-                String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
-                if (descriptions.length == 0) {
-                    throw new MissingDescriptionException();
+            }
+        } else if (input.contains(Commands.COMMAND_EVENT)) {
+            String[] descriptions = input.split(Commands.COMMAND_EVENT);
+            if (descriptions.length == 0) {
+                throw new MissingDescriptionException();
+            } else {
+                String[] inputs = input.split("/at ");
+                if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
+                    throw new InvalidDateException();
                 } else {
-                    String[] inputs = input.split("/by ");
-                    if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                        throw new InvalidDateException();
-                    } else {
-                        try {
-                            Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
-                                    getTime(inputs[1]));
-                            currentTasks.addTasks(newTask);
-                            input = Ui.sayAdd(userInput, newTask, currentTasks);
-                            currentStorage.appendTaskToFile(newTask);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else if (input.contains(Commands.COMMAND_EVENT)) {
-                String[] descriptions = input.split(Commands.COMMAND_EVENT);
-                if (descriptions.length == 0) {
-                    throw new MissingDescriptionException();
-                } else {
-                    String[] inputs = input.split("/at ");
-                    if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                        throw new InvalidDateException();
-                    } else {
-                        try {
-                            Task newTask = new Event(inputs[0], getDate(inputs[1]),
-                                    getTime(inputs[1]));
-                            currentTasks.addTasks(newTask);
-                            input = Ui.sayAdd(userInput, newTask, currentTasks);
-                            currentStorage.appendTaskToFile(newTask);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else if (input.contains(Commands.COMMAND_DELETE)) {
-                String[] descriptions = input.split(Commands.COMMAND_DELETE);
-                if (descriptions.length == 0) {
-                    throw new EmptyInputException();
-                } else {
-                    int taskNumber = findDigit(input);
-                    Task removedTask = currentTasks.getTask(taskNumber);
-                    currentTasks.removeTasks(taskNumber);
-                    input = Ui.sayDelete(userInput, removedTask, currentTasks);
                     try {
-                        currentStorage.writeTasksToFile(currentTasks);
+                        Task newTask = new Event(inputs[0], getDate(inputs[1]),
+                                getTime(inputs[1]));
+                        currentTasks.addTasks(newTask);
+                        userInterface.sayAdd(newTask, currentTasks);
+                        currentStorage.appendTaskToFile(newTask);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            } else if (input.equals("")) {
+            }
+        } else if (input.contains(Commands.COMMAND_DELETE)) {
+            String[] descriptions = input.split(Commands.COMMAND_DELETE);
+            if (descriptions.length == 0) {
                 throw new EmptyInputException();
             } else {
-                throw new InvalidInputException();
+                int taskNumber = findDigit(input);
+                Task removedTask = currentTasks.getTask(taskNumber);
+                currentTasks.removeTasks(taskNumber);
+                userInterface.sayDelete(removedTask, currentTasks);
+                try {
+                    currentStorage.writeTasksToFile(currentTasks);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else if (input.equals("")) {
+            throw new EmptyInputException();
+        } else if (input.equals(Commands.COMMAND_BYE)) {
+            userInterface.sayGoodbye();
+        } else {
+            throw new InvalidInputException();
         }
-        Ui.sayGoodbye();
     }
 
     /**

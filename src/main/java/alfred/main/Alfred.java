@@ -1,6 +1,5 @@
 package alfred.main;
 
-
 import alfred.action.Parser;
 import alfred.action.Ui;
 import alfred.exception.AlfredException;
@@ -12,6 +11,7 @@ import alfred.exception.AlfredException;
 public class Alfred {
     private Ui userInterface;
     private Parser parser;
+    private boolean hasGreeted;
 
     /**
      * Creates a new Alfred object.
@@ -19,50 +19,37 @@ public class Alfred {
     public Alfred() {
         this.userInterface = new Ui();
         this.parser = new Parser();
+        this.hasGreeted = false;
     }
 
     /**
-     * Reruns the command parse with warning.
+     * Generates a response to user input.
+     *
+     * @param input input entered by user
      */
-    private void reRunWithWarning() {
+    public String getResponse(String input) {
         try {
-            parser.parseCommand();
+            parser.parseCommand(input, userInterface);
         } catch (AlfredException e) {
             userInterface.showError(e.getMessage());
-            userInterface.showWarning();
-            reRunFinal();
         }
+        return userInterface.getOutput();
     }
 
     /**
-     * Reruns the command parse before exiting with another error.
+     * Returns a boolean of whether Alfred has greeted.
+     *
+     * @return whether Alfred has greeted
      */
-    private void reRunFinal() {
-        try {
-            parser.parseCommand();
-        } catch (AlfredException e) {
-            userInterface.showError(e.getMessage());
-            userInterface.sayGoodbye();
-        }
+    public boolean isHasGreeted() {
+        return hasGreeted;
     }
 
     /**
-     * Invokes the parser and UI that runs the Alfred chatbot.
+     * Sets that Alfred has greeted.
      */
-    public void run() {
-        userInterface.greetUser();
-        try {
-            parser.parseCommand();
-        } catch (AlfredException e) {
-            userInterface.showError(e.getMessage());
-            reRunWithWarning();
-        }
+    public void setGreeted() {
+        hasGreeted = true;
     }
 
-    /**
-     * This method executes the run method which runs the Alfred chatbot.
-     */
-    public static void main(String[] args) {
-        new Alfred().run();
-    }
 }

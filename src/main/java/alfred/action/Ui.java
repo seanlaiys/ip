@@ -1,7 +1,5 @@
 package alfred.action;
 
-import java.util.Scanner;
-
 import alfred.task.Task;
 /**
  * Contains methods which prints messages Alfred could send
@@ -36,118 +34,103 @@ public class Ui {
 
     private static final String WARNING = "Do be careful with your input or you have to re-run me again";
 
+    private static String output;
+
     /**
-     * Prints logo and greeting words.
+     * Creates new Ui object.
      */
-    public static void greetUser() {
-        System.out.println(LOGO);
-        System.out.println(GREETING);
+    public Ui() {
+        this.output = "";
     }
 
     /**
-     * Prints list of current tasks and returns the next input.
+     * Updates output with logo and greeting words.
+     */
+    public static String greetUser() {
+        return GREETING + "\n" + LOGO;
+    }
+
+    /**
+     * Updates output with list of current tasks.
      *
-     * @param userInput the Scanner for users to key in more inputs
      * @param currentTasks the current list of tasks
-     * @return              the next input from the user
      */
-    public static String generateList(Scanner userInput, TaskList currentTasks) {
-        System.out.println(LIST);
-        System.out.println(currentTasks.toString());
-        String input = userInput.nextLine();
-        return input;
+    public static void generateList(TaskList currentTasks) {
+        output = LIST + "\n" + currentTasks.toString();
     }
 
     /**
-     * Prints Blah and returns the next input.
-     *
-     * @param userInput the Scanner for users to key in more inputs
-     * @return           the next input from the user
+     * Updates output with Blah.
      */
-    public static String sayBlah(Scanner userInput) {
-        System.out.println(BLAH);
-        String input = userInput.nextLine();
-        return input;
+    public static void sayBlah() {
+        output = BLAH;
     }
 
     /**
-     * Prints the words to signal successful adding of task and returns the next input.
+     * Updates output with the words to signal successful
+     * adding of task and returns the next input.
      *
-     * @param userInput the Scanner for users to key in more inputs
      * @param newTask      the new task added
      * @param currentTasks the current list of tasks
-     * @return              the next input from the user
      */
-    public static String sayAdd(Scanner userInput, Task newTask, TaskList currentTasks) {
-        System.out.println(ADD);
-        System.out.println(newTask.toString());
-        System.out.println(TASK_SIZE + " " + currentTasks.getSize());
-        String input = userInput.nextLine();
-        return input;
+    public static void sayAdd(Task newTask, TaskList currentTasks) {
+        String size = String.valueOf(currentTasks.getSize());
+        output = ADD + "\n" + newTask.toString() + "\n" + TASK_SIZE + " " + size;
     }
 
     /**
-     * Prints the words to signal successful marking of task and returns the next input.
+     * Updates output with words to signal successful marking
+     * of task and returns the next input.
      *
-     * @param userInput the Scanner for users to key in more inputs
-     * @param task        the task marked
-     * @return            the next input from the user
+     * @param task the task unmarked
      */
-    public static String sayMark(Scanner userInput, Task task) {
-        System.out.println(MARK);
-        System.out.println(task);
-        String input = userInput.nextLine();
-        return input;
+    public static void sayMark(Task task) {
+        output = MARK + "\n" + task.toString();
     }
 
     /**
-     * Prints the words to signal successful unmarking of task and returns the next input.
+     * Updates output with words to signal successful unmarking
+     * of task and returns the next input.
      *
-     * @param userInput the Scanner for users to key in more inputs
-     * @param task       the task unmarked
-     * @return           the next input from the user
+     * @param task the task unmarked
      */
-    public static String sayUnmark(Scanner userInput, Task task) {
-        System.out.println(UNMARK);
-        System.out.println(task);
-        String input = userInput.nextLine();
-        return input;
+    public static void sayUnmark(Task task) {
+        output = UNMARK + "\n" + task.toString();
     }
 
     /**
-     * Prints the words to signal successful deleting of task and returns the next input.
+     * Updates output with the words to signal successful deleting of task.
      *
-     * @param userInput the Scanner for users to key in more inputs
      * @param task        the task deleted
      * @param currentTasks the current list of tasks
-     * @return            the next input from the user
      */
-    public static String sayDelete(Scanner userInput, Task task, TaskList currentTasks) {
-        System.out.println(DELETE);
-        System.out.println(task.toString());
-        System.out.println(TASK_SIZE + " " + currentTasks.getSize());
-        String input = userInput.nextLine();
-        return input;
+    public static void sayDelete(Task task, TaskList currentTasks) {
+        String size = String.valueOf(currentTasks.getSize());
+        output = DELETE + "\n" + task.toString() + "\n" + TASK_SIZE + " " + size;
     }
 
     /**
-     * Prints words to indicate uncertainty in user's input.
+     * Updates output with words to indicate uncertainty in user's input.
      */
     public static void showError(String error) {
-        System.out.println(error);
+        output = error;
     }
 
     /**
-     * Prints words to indicate uncertainty in user's input.
+     * Updates output with Warning.
      */
     public static void showWarning() {
-        System.out.println(WARNING);
+        output = WARNING;
     }
 
     /**
-     * Prints goodbye words.
+     * Updates output with Goodbye.
      */
     public static void sayGoodbye() {
-        System.out.println(BYE);
+        output = BYE;
+    }
+
+    public static String getOutput() {
+        return output;
     }
 }
