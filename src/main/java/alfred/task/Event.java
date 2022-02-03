@@ -8,9 +8,9 @@ import java.time.format.DateTimeFormatter;
  * Contains date, time and type.
  */
 public class Event extends Task {
+    private static final String TYPE = "[E]";
     private LocalDate date;
     private LocalTime time;
-    private static final String TYPE = "[E]";
 
     /**
      * Creates a new Event object.

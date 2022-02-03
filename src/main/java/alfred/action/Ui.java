@@ -1,12 +1,11 @@
 package alfred.action;
 
-import alfred.task.Task;
 import java.util.Scanner;
+
+import alfred.task.Task;
 /**
- *
  * Contains methods which prints messages Alfred could send
  * to the users according to what the users input.
- *
  */
 public class Ui {
     private static final String LOGO =
@@ -48,86 +47,86 @@ public class Ui {
     /**
      * Prints list of current tasks and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @param currentTasks the current list of tasks
      * @return              the next input from the user
      */
-    public static String generateList(Scanner user_input, TaskList currentTasks) {
+    public static String generateList(Scanner userInput, TaskList currentTasks) {
         System.out.println(LIST);
         System.out.println(currentTasks.toString());
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 
     /**
      * Prints Blah and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @return           the next input from the user
      */
-    public static String sayBlah(Scanner user_input) {
+    public static String sayBlah(Scanner userInput) {
         System.out.println(BLAH);
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 
     /**
      * Prints the words to signal successful adding of task and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @param newTask      the new task added
      * @param currentTasks the current list of tasks
      * @return              the next input from the user
      */
-    public static String sayAdd(Scanner user_input, Task newTask, TaskList currentTasks) {
+    public static String sayAdd(Scanner userInput, Task newTask, TaskList currentTasks) {
         System.out.println(ADD);
         System.out.println(newTask.toString());
         System.out.println(TASK_SIZE + " " + currentTasks.getSize());
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 
     /**
      * Prints the words to signal successful marking of task and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @param task        the task marked
      * @return            the next input from the user
      */
-    public static String sayMark(Scanner user_input, Task task) {
+    public static String sayMark(Scanner userInput, Task task) {
         System.out.println(MARK);
         System.out.println(task);
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 
     /**
      * Prints the words to signal successful unmarking of task and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @param task       the task unmarked
      * @return           the next input from the user
      */
-    public static String sayUnmark(Scanner user_input, Task task) {
+    public static String sayUnmark(Scanner userInput, Task task) {
         System.out.println(UNMARK);
         System.out.println(task);
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 
     /**
      * Prints the words to signal successful deleting of task and returns the next input.
      *
-     * @param user_input the Scanner for users to key in more inputs
+     * @param userInput the Scanner for users to key in more inputs
      * @param task        the task deleted
      * @param currentTasks the current list of tasks
      * @return            the next input from the user
      */
-    public static String sayDelete(Scanner user_input, Task task, TaskList currentTasks) {
+    public static String sayDelete(Scanner userInput, Task task, TaskList currentTasks) {
         System.out.println(DELETE);
         System.out.println(task.toString());
         System.out.println(TASK_SIZE + " " + currentTasks.getSize());
-        String input = user_input.nextLine();
+        String input = userInput.nextLine();
         return input;
     }
 

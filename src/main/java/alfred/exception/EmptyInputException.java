@@ -1,9 +1,7 @@
 package alfred.exception;
 
 /**
- *
  * Represents errors in user input for lack of input.
- *
  */
 public class EmptyInputException extends AlfredException {
 

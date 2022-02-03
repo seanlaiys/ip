@@ -1,12 +1,13 @@
 package alfred.action;
 
-import alfred.task.Task;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import alfred.task.Task;
+
 /**
- *  Encapsulates a list containing Task objects. <code>TaskList</code> contains
- *  <code>ArrayList<Task></code>
+ *  Encapsulates a list containing Task objects. TaskList contains
+ *  ArrayList
  */
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -23,7 +24,6 @@ public class TaskList {
      * the method, which will be stored in tasks.
      *
      * @param newTask the new Task object to be added
-     *
      */
     public void addTasks(Task newTask) {
         this.tasks.add(newTask);
@@ -33,7 +33,6 @@ public class TaskList {
      * Removes specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be removed
-     *
      */
     public void removeTasks(int taskNumber) {
         this.tasks.remove(taskNumber);
@@ -43,7 +42,6 @@ public class TaskList {
      * Marks specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be marked
-     *
      */
     public void markTask(int taskNumber) {
         Task selected = this.tasks.get(taskNumber);
@@ -55,7 +53,6 @@ public class TaskList {
      * Unmarks specified task object from TaskList.
      *
      * @param taskNumber the index of Task object to be unmarked
-     *
      */
     public void unmarkTask(int taskNumber) {
         Task selected = this.tasks.get(taskNumber);

@@ -1,24 +1,24 @@
 package alfred.action;
 
-import alfred.task.Deadline;
-import alfred.task.Event;
-import alfred.task.Task;
-import alfred.task.ToDo;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+import alfred.task.Deadline;
+import alfred.task.Event;
+import alfred.task.Task;
+import alfred.task.ToDo;
 /**
- *
- * Stores the current tasks in an <code>ArrayList</code>.
- *
+ * Stores the current tasks in an ArrayList.
  */
 public class Storage {
-    File taskFile;
+    private File taskFile;
     private boolean isNew;
 
     /**
@@ -79,7 +79,7 @@ public class Storage {
      */
     public void writeTasksToFile(TaskList tasks) throws IOException {
         String fileContent = "";
-        for(int i = 0; i < tasks.getSize(); i++) {
+        for (int i = 0; i < tasks.getSize(); i++) {
             fileContent += tasks.getTask(i).toString() + System.lineSeparator();
         }
         try {
@@ -121,12 +121,12 @@ public class Storage {
                 tasks.addTasks(newTask);
             } else if (current.contains(Commands.COMMAND_EVENT)) {
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
-                String OPEN_BRAC = "\\(";
-                String CLOSE_BRAC = "\\)";
-                String[] newDescriptions = descriptions[1].split(OPEN_BRAC);
-                String date = newDescriptions[1].split(CLOSE_BRAC)[0];
+                String openBracket = "\\(";
+                String closeBracket = "\\)";
+                String[] newDescriptions = descriptions[1].split(openBracket);
+                String date = newDescriptions[1].split(closeBracket)[0];
                 String[] dateSplits = date.split("at: ")[1].split(" ");
-                date = dateSplits[0]+ " " + dateSplits[1] + " " + dateSplits[2];
+                date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
                 String time = dateSplits[3] + dateSplits[4];
                 DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
                 DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
@@ -137,12 +137,12 @@ public class Storage {
                 tasks.addTasks(newTask);
             } else {
                 String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
-                String OPEN_BRAC = "\\(";
-                String CLOSE_BRAC = "\\)";
-                String[] newDescriptions = descriptions[1].split(OPEN_BRAC);
-                String date = newDescriptions[1].split(CLOSE_BRAC)[0];
+                String openBracket = "\\(";
+                String closeBracket = "\\)";
+                String[] newDescriptions = descriptions[1].split(openBracket);
+                String date = newDescriptions[1].split(closeBracket)[0];
                 String[] dateSplits = date.split("by: ")[1].split(" ");
-                date = dateSplits[0]+ " " + dateSplits[1] + " " + dateSplits[2];
+                date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
                 String time = dateSplits[3] + dateSplits[4];
                 DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
                 DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");

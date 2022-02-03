@@ -3,17 +3,17 @@ package alfred.task;
 import java.time.LocalDate;
 /**
  *
- * This class encapsulates a <code>Task</code> and its status.
+ * This class encapsulates a Task and its status.
  *
  */
 public abstract class Task {
-    protected String task;
-    protected boolean isDone;
     protected static final String DONE = "[X]";
     protected static final String NOTDONE = "[ ]";
+    protected String task;
+    protected boolean isDone;
 
     /**
-     * Creates a new <code>Task</code> object.
+     * Creates a new Task object.
      *
      * @param task the task to be added
      */
@@ -23,7 +23,7 @@ public abstract class Task {
     }
 
     /**
-     * Creates a new <code>Task</code> object.
+     * Creates a new Task object.
      *
      * @param task the task to be added
      * @param isDone whether the task is done
@@ -34,14 +34,14 @@ public abstract class Task {
     }
 
     /**
-     * Marks a <code>Task</code> object done.
+     * Marks a Task object done.
      */
     public void mark() {
         this.isDone = true;
     }
 
     /**
-     * Marks a <code>Task</code> object undone.
+     * Marks a Tas object undone.
      */
     public void unmark() {
         this.isDone = false;
@@ -54,10 +54,7 @@ public abstract class Task {
      * @return a boolean of whether the task contains the keyword
      */
     public boolean contains(String keyword) {
-        if (task.contains(keyword)) {
-            return true;
-        }
-        return false;
+        return task.contains(keyword);
     }
 
     public abstract LocalDate getDate();

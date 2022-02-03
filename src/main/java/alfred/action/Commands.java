@@ -1,10 +1,8 @@
 package alfred.action;
 
 /**
- *
  * Contains commands the user could input to invoke methods
  * to their command.
- *
  */
 public class Commands {
     public static final String COMMAND_BYE = "bye";

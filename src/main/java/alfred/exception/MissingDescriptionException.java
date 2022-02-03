@@ -1,9 +1,7 @@
 package alfred.exception;
 
 /**
- *
  * Represents errors in user input for missing description for tasks.
- *
  */
 public class MissingDescriptionException extends AlfredException {
 
@@ -11,7 +9,6 @@ public class MissingDescriptionException extends AlfredException {
 
     /**
      * Creates a new exception object for missing description in tasks.
-     *
      */
     public MissingDescriptionException() {
         super(EMPTY);

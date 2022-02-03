@@ -2,7 +2,7 @@ package alfred.task;
 
 import java.time.LocalDate;
 /**
- * Encapsulates a <code>ToDo</code> which inherits from <code>Task</code>.
+ * Encapsulates a ToDo which inherits from Task.
  */
 public class ToDo extends Task {
     private static final String TYPE = "[T]";

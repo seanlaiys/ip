@@ -1,16 +1,15 @@
 package alfred.main;
 
-import alfred.exception.AlfredException;
+
 import alfred.action.Parser;
 import alfred.action.Ui;
+import alfred.exception.AlfredException;
 /**
- *
  * Encapsulates the Alfred chatbot with a method to run it.
- * When <code>main()</code> is executed, chatbot greets users
- * and invokes <code>Parser.readCommand()</code> method.
- *
+ * When main() is executed, chatbot greets users
+ * and invokes Parser.readCommand() method.
  */
-public class Alfred{
+public class Alfred {
     private Ui userInterface;
     private Parser parser;
 

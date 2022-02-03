@@ -1,9 +1,7 @@
 package alfred.exception;
 
 /**
- *
  * Represents errors in user input for invalid date and time.
- *
  */
 public class InvalidDateException extends AlfredException {
 
@@ -11,7 +9,6 @@ public class InvalidDateException extends AlfredException {
 
     /**
      * Creates a new exception object for invalid date.
-     *
      */
     public InvalidDateException() {
         super(INVALID_DATE);

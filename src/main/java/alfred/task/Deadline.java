@@ -1,16 +1,16 @@
 package alfred.task;
 
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 /**
- * Encapsulates a <code>Deadline</code> which inherits from <codeTask</code>.
+ * Encapsulates a Deadline which inherits from Task.
  * Contains date, time and type.
  */
 public class Deadline extends Task {
+    private static final String TYPE = "[D]";
     private LocalDate date;
     private LocalTime time;
-    private static final String TYPE = "[D]";
 
     /**
      * Creates a new Deadline object.
@@ -60,6 +60,6 @@ public class Deadline extends Task {
         String status = isDone ? Task.DONE : Task.NOTDONE;
         return TYPE + status + " " + task + "(by: "
                 + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a"))+ ")";
+                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")";
     }
 }

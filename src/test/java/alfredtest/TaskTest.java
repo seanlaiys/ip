@@ -1,14 +1,15 @@
 package alfredtest;
 
-import alfred.task.ToDo;
-import alfred.task.Deadline;
-import alfred.task.Event;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import alfred.task.Deadline;
+import alfred.task.Event;
+import alfred.task.ToDo;
 
 public class TaskTest {
 

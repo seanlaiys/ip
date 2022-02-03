@@ -1,21 +1,25 @@
 package alfred.action;
 
-import alfred.exception.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+import alfred.exception.AlfredException;
+import alfred.exception.EmptyInputException;
+import alfred.exception.InvalidDateException;
+import alfred.exception.InvalidInputException;
+import alfred.exception.MissingDescriptionException;
 import alfred.task.Deadline;
 import alfred.task.Event;
 import alfred.task.Task;
 import alfred.task.ToDo;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.LocalTime;
 /**
- *
  * Serves to take in the input keyed in by the user
  * and invokes methods in response to what the user has keyed in.
- *
  */
 public class Parser {
     /**
@@ -25,7 +29,6 @@ public class Parser {
     public static void parseCommand() throws AlfredException {
         String input;
         TaskList currentTasks = new TaskList();
-        String homePath = System.getProperty("user.home");
         Storage currentStorage = new Storage();
         if (!currentStorage.isNewFile()) {
             try {
@@ -34,21 +37,21 @@ public class Parser {
                 e.printStackTrace();
             }
         }
-        Scanner user_input = new Scanner(System.in);
-        input = user_input.nextLine();
-        while(!input.equals(Commands.COMMAND_BYE)) {
-            if(input.contains(Commands.COMMAND_LIST)) {
-                if(input.contains("/on")) {
+        Scanner userInput = new Scanner(System.in);
+        input = userInput.nextLine();
+        while (!input.equals(Commands.COMMAND_BYE)) {
+            if (input.contains(Commands.COMMAND_LIST)) {
+                if (input.contains("/on")) {
                     String[] inputs = input.split("/on ");
-                        try {
-                            LocalDate date = getDate(inputs[1]);
-                            TaskList newTasks = currentTasks.getTasksByDate(date);
-                            input = Ui.generateList(user_input, newTasks);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        LocalDate date = getDate(inputs[1]);
+                        TaskList newTasks = currentTasks.getTasksByDate(date);
+                        input = Ui.generateList(userInput, newTasks);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    input = Ui.generateList(user_input, currentTasks);
+                    input = Ui.generateList(userInput, currentTasks);
                 }
             } else if (input.contains(Commands.COMMAND_FIND)) {
                 String[] descriptions = input.split(Commands.COMMAND_FIND);
@@ -56,16 +59,16 @@ public class Parser {
                     throw new EmptyInputException();
                 } else {
                     TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
-                    input = Ui.generateList(user_input, result);
+                    input = Ui.generateList(userInput, result);
 
                 }
             } else if (input.contains(Commands.COMMAND_BLAH)) {
-                input = Ui.sayBlah(user_input);
+                input = Ui.sayBlah(userInput);
             } else if (input.contains(Commands.COMMAND_UNMARK)) {
                 int taskNumber = findDigit(input);
                 currentTasks.unmarkTask(taskNumber);
                 Task unmarked = currentTasks.getTask(taskNumber);
-                input = Ui.sayUnmark(user_input, unmarked);
+                input = Ui.sayUnmark(userInput, unmarked);
                 try {
                     currentStorage.writeTasksToFile(currentTasks);
                 } catch (IOException e) {
@@ -75,7 +78,7 @@ public class Parser {
                 int taskNumber = findDigit(input);
                 currentTasks.markTask(taskNumber);
                 Task marked = currentTasks.getTask(taskNumber);
-                input = Ui.sayMark(user_input, marked);
+                input = Ui.sayMark(userInput, marked);
                 try {
                     currentStorage.writeTasksToFile(currentTasks);
                 } catch (IOException e) {
@@ -88,7 +91,7 @@ public class Parser {
                 } else {
                     Task newTask = new ToDo(input);
                     currentTasks.addTasks(newTask);
-                    input = Ui.sayAdd(user_input, newTask, currentTasks);
+                    input = Ui.sayAdd(userInput, newTask, currentTasks);
                     try {
                         currentStorage.appendTaskToFile(newTask);
                     } catch (IOException e) {
@@ -108,7 +111,7 @@ public class Parser {
                             Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
                                     getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
-                            input = Ui.sayAdd(user_input, newTask, currentTasks);
+                            input = Ui.sayAdd(userInput, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -128,7 +131,7 @@ public class Parser {
                             Task newTask = new Event(inputs[0], getDate(inputs[1]),
                                     getTime(inputs[1]));
                             currentTasks.addTasks(newTask);
-                            input = Ui.sayAdd(user_input, newTask, currentTasks);
+                            input = Ui.sayAdd(userInput, newTask, currentTasks);
                             currentStorage.appendTaskToFile(newTask);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -143,7 +146,7 @@ public class Parser {
                     int taskNumber = findDigit(input);
                     Task removedTask = currentTasks.getTask(taskNumber);
                     currentTasks.removeTasks(taskNumber);
-                    input = Ui.sayDelete(user_input, removedTask, currentTasks);
+                    input = Ui.sayDelete(userInput, removedTask, currentTasks);
                     try {
                         currentStorage.writeTasksToFile(currentTasks);
                     } catch (IOException e) {
@@ -168,8 +171,8 @@ public class Parser {
     public static int findDigit(String input) {
         char[] inputChars = input.toCharArray();
         String number = "";
-        for(char ch : inputChars) {
-            if(Character.isDigit(ch)) {
+        for (char ch : inputChars) {
+            if (Character.isDigit(ch)) {
                 number += ch;
             }
         }
