@@ -32,9 +32,10 @@ public class Deadline extends Task {
      * @param date a date of the deadline
      * @param time time of the deadline
      * @param isDone whether the deadline is done
+     * @param priority int representing priority
      */
-    public Deadline(String deadline, LocalDate date, LocalTime time, boolean isDone) {
-        super(deadline, isDone);
+    public Deadline(String deadline, LocalDate date, LocalTime time, boolean isDone, int priority) {
+        super(deadline, isDone, priority);
         this.date = date;
         this.time = time;
     }
@@ -57,9 +58,10 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        String status = isDone ? Task.DONE : Task.NOTDONE;
+        String status = isDone ? Task.DONE : Task.NOT_DONE;
+        String priority = super.numToPriority();
         return TYPE + status + " " + task + "(by: "
                 + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")";
+                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")" + priority;
     }
 }

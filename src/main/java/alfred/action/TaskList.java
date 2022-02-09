@@ -44,7 +44,7 @@ public class TaskList {
      * @param taskNumber the index of Task object to be marked
      */
     public void markTask(int taskNumber) {
-        assert tasks.size() > taskNumber: "Tasks length should be greater than task number";
+        assert tasks.size() > taskNumber : "Tasks length should be greater than task number";
         Task selected = tasks.get(taskNumber);
         selected.mark();
         tasks.set(taskNumber, selected);
@@ -56,9 +56,21 @@ public class TaskList {
      * @param taskNumber the index of Task object to be unmarked
      */
     public void unmarkTask(int taskNumber) {
-        assert tasks.size() > taskNumber: "Tasks length should be greater than task number";
+        assert tasks.size() > taskNumber : "Tasks length should be greater than task number";
         Task selected = tasks.get(taskNumber);
         selected.unmark();
+        tasks.set(taskNumber, selected);
+    }
+
+    /**
+     * Sets priority of specified task object from TaskList.
+     *
+     * @param taskNumber the index of Task object to be unmarked
+     */
+    public void setTaskPriority(int taskNumber, int priority) {
+        assert tasks.size() > taskNumber : "Tasks length should be greater than task number";
+        Task selected = tasks.get(taskNumber);
+        selected.setPriority(priority);
         this.tasks.set(taskNumber, selected);
     }
 

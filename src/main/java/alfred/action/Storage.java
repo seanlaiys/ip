@@ -27,7 +27,7 @@ public class Storage {
      */
     public Storage() {
         this.isNew = true;
-        this.taskFile = new File( "taskFile.txt");
+        this.taskFile = new File("taskFile.txt");
         this.taskFile = new File(this.taskFile.getAbsolutePath());
         try {
             this.isNew = this.taskFile.createNewFile();
@@ -84,7 +84,7 @@ public class Storage {
             fileContent += tasks.getTask(i).toString() + System.lineSeparator();
         }
         try {
-            assert taskFile != null: "taskFile cannot be null";
+            assert taskFile != null : "taskFile cannot be null";
             writeToFile(taskFile.getAbsolutePath(), fileContent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,7 +99,7 @@ public class Storage {
      */
     public void appendTaskToFile(Task task) throws IOException {
         try {
-            assert taskFile != null: "taskFile cannot be null";
+            assert taskFile != null : "taskFile cannot be null";
             appendToFile(taskFile.getAbsolutePath(), task.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,24 +112,29 @@ public class Storage {
      * @throws FileNotFoundException if a TaskFile could not be found
      */
     public TaskList fileToTaskList() throws FileNotFoundException {
-        assert taskFile != null: "taskFile cannot be null";
+        assert taskFile != null : "taskFile cannot be null";
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
         String current;
         TaskList tasks = new TaskList();
         while (s.hasNext()) {
             current = s.nextLine();
             if (current.contains(Commands.COMMAND_TODO)) {
+                int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_TODO);
                 Task newTask = new ToDo(Commands.COMMAND_TODO + descriptions[1],
-                        current.contains("[X]"));
+                        current.contains("[X]"), priority);
                 tasks.addTasks(newTask);
             } else if (current.contains(Commands.COMMAND_EVENT)) {
+                int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
-                Task newTask = generateTaskFromStorage(Commands.COMMAND_EVENT, descriptions, current.contains("[X]"));
+                Task newTask = generateTaskFromStorage(Commands.COMMAND_EVENT,
+                        descriptions, current.contains("[X]"), priority);
                 tasks.addTasks(newTask);
             } else {
+                int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
-                Task newTask = generateTaskFromStorage(Commands.COMMAND_DEADLINE, descriptions, current.contains("[X]"));
+                Task newTask = generateTaskFromStorage(Commands.COMMAND_DEADLINE,
+                        descriptions, current.contains("[X]"), priority);
                 tasks.addTasks(newTask);
             }
         }
@@ -142,9 +147,11 @@ public class Storage {
      * @param command the command specifying if the task is event or deadline
      * @param descriptions the description of the task split into an array of strings
      * @param isDone whether the task is done
+     * @param priority priority number of task
      * @return a Task based on the arguments passed in
      */
-    public Task generateTaskFromStorage(String command, String[] descriptions, boolean isDone) {
+    private Task generateTaskFromStorage(String command, String[] descriptions,
+                                         boolean isDone, int priority) {
         String[] newDescriptions = descriptions[1].split("\\(");
         String date = newDescriptions[1].split("\\)")[0];
         String[] dateSplits = date.split("at: ")[1].split(" ");
@@ -156,11 +163,31 @@ public class Storage {
         LocalTime newTime = LocalTime.parse(time, formatterTime);
         Task newTask;
         if (command.equals(Commands.COMMAND_EVENT)) {
-            newTask = new Event(command + newDescriptions[0], newDate, newTime, isDone);
+            newTask = new Event(command + newDescriptions[0], newDate, newTime,
+                    isDone, priority);
         } else {
-            newTask = new Deadline(command + newDescriptions[0], newDate, newTime, isDone);
+            newTask = new Deadline(command + newDescriptions[0], newDate, newTime,
+                    isDone, priority);
         }
         return newTask;
+    }
+
+    /**
+     * Returns int representing priority from string input.
+     *
+     * @param input the input to extract priority from
+     * @return int representing priority
+     */
+    private int extractPriority(String input) {
+        if (input.contains(Task.HIGH_PRIORITY)) {
+            return 3;
+        } else if (input.contains(Task.MEDIUM_PRIORITY)) {
+            return 2;
+        } else if (input.contains(Task.LOW_PRIORITY)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }

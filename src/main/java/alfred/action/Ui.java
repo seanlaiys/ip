@@ -7,11 +7,11 @@ import alfred.task.Task;
  */
 public class Ui {
     private static final String LOGO =
-            "    __      \n"
-            + "   /  \\    \n"
-            + "  / /\\ \\  \n"
-            + " / /__\\ \\  \n"
-            + "/_/    \\_\\ \n";
+            "    __               _______\n"
+            + "   /  \\              ||       ||\n"
+            + "  / /\\ \\            ||____//\n"
+            + " / /__\\ \\          || \n"
+            + "/_/    \\_\\   O   ||        O\n";
 
     private static final String GREETING =
             "Greetings, my name is Alfred. \n" + "How may I assist you?";
@@ -32,7 +32,7 @@ public class Ui {
 
     private static final String TASK_SIZE = "Here is the number of tasks in the list:";
 
-    private static final String WARNING = "Do be careful with your input or you have to re-run me again";
+    private static final String PRIORITY = "I have adjusted the priority of the following task:";
 
     private static String output;
 
@@ -119,8 +119,8 @@ public class Ui {
     /**
      * Updates output with Warning.
      */
-    public static void showWarning() {
-        output = WARNING;
+    public static void sayPriority(Task task) {
+        output = PRIORITY + "\n" + task.toString();
     }
 
     /**

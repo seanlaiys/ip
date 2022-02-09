@@ -21,9 +21,10 @@ public class ToDo extends Task {
      *
      * @param toDo a description of the todo
      * @param isDone whether the todo is done
+     * @param priority int representing priority
      */
-    public ToDo(String toDo, boolean isDone) {
-        super(toDo, isDone);
+    public ToDo(String toDo, boolean isDone, int priority) {
+        super(toDo, isDone, priority);
     }
 
     /**
@@ -43,7 +44,8 @@ public class ToDo extends Task {
      */
     @Override
     public String toString() {
-        String status = isDone ? Task.DONE : Task.NOTDONE;
-        return TYPE + status + " " + task;
+        String status = isDone ? Task.DONE : Task.NOT_DONE;
+        String priority = super.numToPriority();
+        return TYPE + status + " " + task + priority;
     }
 }

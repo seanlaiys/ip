@@ -5,7 +5,8 @@ package alfred.exception;
  */
 public class EmptyInputException extends AlfredException {
 
-    private static final String NO_DESCRIPTION = "Please try again with a description in mind!";
+    private static final String NO_DESCRIPTION =
+            "Please try again with a description in mind! Be as SPECIFIC as you can please...";
 
     /**
      * Creates a new exception object for empty input.

@@ -30,9 +30,10 @@ public class Event extends Task {
      * @param event a description of the event.
      * @param date a date of the event
      * @param isDone whether the event is done
+     * @param priority int representing priority
      */
-    public Event(String event, LocalDate date, LocalTime time, boolean isDone) {
-        super(event, isDone);
+    public Event(String event, LocalDate date, LocalTime time, boolean isDone, int priority) {
+        super(event, isDone, priority);
         this.date = date;
         this.time = time;
     }
@@ -55,9 +56,10 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        String status = isDone ? Task.DONE : Task.NOTDONE;
+        String status = isDone ? Task.DONE : Task.NOT_DONE;
+        String priority = super.numToPriority();
         return TYPE + status + " " + task + "(at: "
                 + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")";
+                + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")" + priority;
     }
 }

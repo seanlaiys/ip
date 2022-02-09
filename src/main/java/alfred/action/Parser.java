@@ -11,6 +11,7 @@ import alfred.exception.EmptyInputException;
 import alfred.exception.InvalidDateException;
 import alfred.exception.InvalidInputException;
 import alfred.exception.MissingDescriptionException;
+import alfred.exception.TasksOutOfBoundsException;
 import alfred.task.Deadline;
 import alfred.task.Event;
 import alfred.task.Task;
@@ -68,6 +69,7 @@ public class Parser {
             userInterface.sayBlah();
         } else if (input.contains(Commands.COMMAND_UNMARK)) {
             int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
             currentTasks.unmarkTask(taskNumber);
             Task unmarked = currentTasks.getTask(taskNumber);
             userInterface.sayUnmark(unmarked);
@@ -78,9 +80,54 @@ public class Parser {
             }
         } else if (input.contains(Commands.COMMAND_MARK)) {
             int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
             currentTasks.markTask(taskNumber);
             Task marked = currentTasks.getTask(taskNumber);
             userInterface.sayMark(marked);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_HIGH_PRIORITY)) {
+            int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
+            currentTasks.setTaskPriority(taskNumber, 3);
+            Task newTask = currentTasks.getTask(taskNumber);
+            userInterface.sayPriority(newTask);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_MEDIUM_PRIORITY)) {
+            int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
+            currentTasks.setTaskPriority(taskNumber, 2);
+            Task newTask = currentTasks.getTask(taskNumber);
+            userInterface.sayPriority(newTask);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_LOW_PRIORITY)) {
+            int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
+            currentTasks.setTaskPriority(taskNumber, 1);
+            Task newTask = currentTasks.getTask(taskNumber);
+            userInterface.sayPriority(newTask);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.contains(Commands.COMMAND_REMOVE_PRIORITY)) {
+            int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
+            currentTasks.setTaskPriority(taskNumber, 0);
+            Task newTask = currentTasks.getTask(taskNumber);
+            userInterface.sayPriority(newTask);
             try {
                 currentStorage.writeTasksToFile(currentTasks);
             } catch (IOException e) {
@@ -139,6 +186,7 @@ public class Parser {
                 throw new EmptyInputException();
             }
             int taskNumber = findDigit(input);
+            isValidIndex(taskNumber);
             Task removedTask = currentTasks.getTask(taskNumber);
             currentTasks.removeTasks(taskNumber);
             userInterface.sayDelete(removedTask, currentTasks);
@@ -161,14 +209,18 @@ public class Parser {
      * based on the input provided by the user containing a digit.
      *
      * @return an int index of the task
+     * @throws EmptyInputException if input does not contain an index
      */
-    public static int findDigit(String input) {
+    public static int findDigit(String input) throws EmptyInputException {
         char[] inputChars = input.toCharArray();
         String number = "";
         for (char ch : inputChars) {
             if (Character.isDigit(ch)) {
                 number += ch;
             }
+        }
+        if (number.equals("")) {
+            throw new EmptyInputException();
         }
         int digit = Integer.parseInt(number);
         return digit - 1;
@@ -232,6 +284,21 @@ public class Parser {
         String[] timeSplits = yearSplits[1].split("");
         if (timeSplits.length != 4) {
             throw new InvalidDateException();
+        }
+    }
+
+    /**
+     *Throws exception if an index input by user is invalid.
+     *
+     * @param input the int input of index
+     * @throws TasksOutOfBoundsException if input date is invalid
+     */
+    public static void isValidIndex(int input) throws TasksOutOfBoundsException {
+        if (currentTasks.getSize() <= input) {
+            throw new TasksOutOfBoundsException();
+        }
+        if (input < 0) {
+            throw new TasksOutOfBoundsException();
         }
     }
 

@@ -29,10 +29,10 @@ public class Alfred {
      */
     public String getResponse(String input) {
         try {
-            assert parser != null: "parser should not be equal to null";
+            assert parser != null : "parser should not be equal to null";
             parser.parseCommand(input, userInterface);
         } catch (AlfredException e) {
-            assert userInterface != null: "userInterface should not be equal to null";
+            assert userInterface != null : "userInterface should not be equal to null";
             userInterface.showError(e.getMessage());
         }
         return userInterface.getOutput();

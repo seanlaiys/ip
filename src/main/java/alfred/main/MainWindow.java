@@ -4,11 +4,9 @@ import alfred.action.Commands;
 import alfred.action.Ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 /**
@@ -60,9 +58,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        assert input != null:"input text should not be null";
+        assert input != null : "input text should not be null";
         String response = alfred.getResponse(input);
-        assert response != null:"response text should not be null";
+        assert response != null : "response text should not be null";
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getAlfredDialog(response, alfredImage)

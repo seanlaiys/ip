@@ -12,7 +12,7 @@ public class TaskListTest {
 
     @Test
     public void testAddTaskToTaskList() {
-        Task todo = new ToDo("todo read book", true);
+        Task todo = new ToDo("todo read book", true, 0);
         TaskList test = new TaskList();
         test.addTasks(todo);
         assertEquals("1.[T][X] todo read book" + "\n", test.toString());
@@ -20,8 +20,8 @@ public class TaskListTest {
 
     @Test
     public void testRemoveTaskFromTaskList() {
-        Task todo = new ToDo("todo read book", true);
-        Task todo1 = new ToDo("todo read dictionary", true);
+        Task todo = new ToDo("todo read book", true, 0);
+        Task todo1 = new ToDo("todo read dictionary", true, 0);
         TaskList test = new TaskList();
         test.addTasks(todo);
         test.addTasks(todo1);
