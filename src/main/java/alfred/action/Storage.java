@@ -83,6 +83,7 @@ public class Storage {
             fileContent += tasks.getTask(i).toString() + System.lineSeparator();
         }
         try {
+            assert taskFile != null: "taskFile cannot be null";
             writeToFile(taskFile.getAbsolutePath(), fileContent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,6 +98,7 @@ public class Storage {
      */
     public void appendTaskToFile(Task task) throws IOException {
         try {
+            assert taskFile != null: "taskFile cannot be null";
             appendToFile(taskFile.getAbsolutePath(), task.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +111,7 @@ public class Storage {
      * @throws FileNotFoundException if a TaskFile could not be found
      */
     public TaskList fileToTaskList() throws FileNotFoundException {
+        assert taskFile != null: "taskFile cannot be null";
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
         String current;
         TaskList tasks = new TaskList();

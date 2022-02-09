@@ -44,9 +44,10 @@ public class TaskList {
      * @param taskNumber the index of Task object to be marked
      */
     public void markTask(int taskNumber) {
-        Task selected = this.tasks.get(taskNumber);
+        assert tasks.size() > taskNumber: "Tasks length should be greater than task number";
+        Task selected = tasks.get(taskNumber);
         selected.mark();
-        this.tasks.set(taskNumber, selected);
+        tasks.set(taskNumber, selected);
     }
 
     /**
@@ -55,7 +56,8 @@ public class TaskList {
      * @param taskNumber the index of Task object to be unmarked
      */
     public void unmarkTask(int taskNumber) {
-        Task selected = this.tasks.get(taskNumber);
+        assert tasks.size() > taskNumber: "Tasks length should be greater than task number";
+        Task selected = tasks.get(taskNumber);
         selected.unmark();
         this.tasks.set(taskNumber, selected);
     }
