@@ -69,6 +69,7 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getAlfredDialog(String text, Image img) {
         var db = new DialogBox(text, img);
+        assert db != null: "DialogBox should not be null";
         db.flip();
         return db;
     }

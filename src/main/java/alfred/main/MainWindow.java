@@ -60,7 +60,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        assert input != null:"input text should not be null";
         String response = alfred.getResponse(input);
+        assert response != null:"response text should not be null";
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getAlfredDialog(response, alfredImage)
