@@ -21,8 +21,8 @@ import alfred.task.ToDo;
  */
 public class Parser {
 
-private static TaskList currentTasks;
-private static Storage currentStorage;
+    private static TaskList currentTasks;
+    private static Storage currentStorage;
 
     /**
      * Creates new Parser object.
@@ -61,11 +61,9 @@ private static Storage currentStorage;
             String[] descriptions = input.split(Commands.COMMAND_FIND);
             if (descriptions.length == 0) {
                 throw new EmptyInputException();
-            } else {
-                TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
-                userInterface.generateList(result);
-
             }
+            TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
+            userInterface.generateList(result);
         } else if (input.contains(Commands.COMMAND_BLAH)) {
             userInterface.sayBlah();
         } else if (input.contains(Commands.COMMAND_UNMARK)) {
@@ -92,70 +90,62 @@ private static Storage currentStorage;
             String[] descriptions = input.split(Commands.COMMAND_TODO);
             if (descriptions.length == 0) {
                 throw new MissingDescriptionException();
-            } else {
-                Task newTask = new ToDo(input);
-                currentTasks.addTasks(newTask);
-                userInterface.sayAdd(newTask, currentTasks);
-                try {
-                    currentStorage.appendTaskToFile(newTask);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            }
+            Task newTask = new ToDo(input);
+            currentTasks.addTasks(newTask);
+            userInterface.sayAdd(newTask, currentTasks);
+            try {
+                currentStorage.appendTaskToFile(newTask);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else if (input.contains(Commands.COMMAND_DEADLINE)) {
             String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
             if (descriptions.length == 0) {
                 throw new MissingDescriptionException();
-            } else {
-                String[] inputs = input.split("/by ");
-                if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                    throw new InvalidDateException();
-                } else {
-                    try {
-                        Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
-                                getTime(inputs[1]));
-                        currentTasks.addTasks(newTask);
-                        userInterface.sayAdd(newTask, currentTasks);
-                        currentStorage.appendTaskToFile(newTask);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            }
+            String[] inputs = input.split("/by ");
+            try {
+                isValidTime(inputs[1]);
+                isValidDate(inputs[1]);
+                Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
+                        getTime(inputs[1]));
+                currentTasks.addTasks(newTask);
+                userInterface.sayAdd(newTask, currentTasks);
+                currentStorage.appendTaskToFile(newTask);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else if (input.contains(Commands.COMMAND_EVENT)) {
             String[] descriptions = input.split(Commands.COMMAND_EVENT);
             if (descriptions.length == 0) {
                 throw new MissingDescriptionException();
-            } else {
-                String[] inputs = input.split("/at ");
-                if (!isValidTime(inputs[1]) || !isValidDate(inputs[1])) {
-                    throw new InvalidDateException();
-                } else {
-                    try {
-                        Task newTask = new Event(inputs[0], getDate(inputs[1]),
-                                getTime(inputs[1]));
-                        currentTasks.addTasks(newTask);
-                        userInterface.sayAdd(newTask, currentTasks);
-                        currentStorage.appendTaskToFile(newTask);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            }
+            String[] inputs = input.split("/at ");
+            try {
+                isValidTime(inputs[1]);
+                isValidDate(inputs[1]);
+                Task newTask = new Event(inputs[0], getDate(inputs[1]),
+                        getTime(inputs[1]));
+                currentTasks.addTasks(newTask);
+                userInterface.sayAdd(newTask, currentTasks);
+                currentStorage.appendTaskToFile(newTask);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else if (input.contains(Commands.COMMAND_DELETE)) {
             String[] descriptions = input.split(Commands.COMMAND_DELETE);
             if (descriptions.length == 0) {
                 throw new EmptyInputException();
-            } else {
-                int taskNumber = findDigit(input);
-                Task removedTask = currentTasks.getTask(taskNumber);
-                currentTasks.removeTasks(taskNumber);
-                userInterface.sayDelete(removedTask, currentTasks);
-                try {
-                    currentStorage.writeTasksToFile(currentTasks);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            }
+            int taskNumber = findDigit(input);
+            Task removedTask = currentTasks.getTask(taskNumber);
+            currentTasks.removeTasks(taskNumber);
+            userInterface.sayDelete(removedTask, currentTasks);
+            try {
+                currentStorage.writeTasksToFile(currentTasks);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else if (input.equals("")) {
             throw new EmptyInputException();
@@ -215,38 +205,34 @@ private static Storage currentStorage;
     }
 
     /**
-     * Returns whether a date input by user is valid.
+     * Throws exception if a date input by user is invalid.
      *
      * @param input the String input of the LocalDate
-     * @return a boolean on whether a date input is valid
-     * @throws IOException if input is invalid
+     * @throws InvalidDateException if input date is invalid
      */
-    public static Boolean isValidDate(String input) {
+    public static void isValidDate(String input) throws InvalidDateException {
         String[] dateSplits = input.split("/");
         if (dateSplits.length < 3) {
-            return false;
-        } else if (dateSplits[2].split(" ")[0].split("").length != 4) {
-            return false;
-        } else {
-            return true;
+            throw new InvalidDateException();
+        }
+        if (dateSplits[2].split(" ")[0].split("").length != 4) {
+            throw new InvalidDateException();
         }
     }
 
     /**
-     * Returns whether a time input by user is valid.
+     *Throws exception if a time input by user is invalid.
      *
      * @param input the String input of the LocalDate
-     * @return a boolean on whether a time input is valid
-     * @throws IOException if input is invalid
+     * @throws InvalidDateException if input date is invalid
      */
-    public static Boolean isValidTime(String input) {
+    public static void isValidTime(String input) throws InvalidDateException {
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
         String[] timeSplits = yearSplits[1].split("");
         if (timeSplits.length != 4) {
-            return false;
+            throw new InvalidDateException();
         }
-        return true;
     }
 
 

@@ -1,1 +1,2 @@
 [T][ ] todo read book
+[E][ ] event throw party (at: Aug 27 2022 06:00 PM)

@@ -18,6 +18,7 @@ import alfred.task.ToDo;
  * Stores the current tasks in an ArrayList.
  */
 public class Storage {
+
     private File taskFile;
     private boolean isNew;
 
@@ -124,38 +125,42 @@ public class Storage {
                 tasks.addTasks(newTask);
             } else if (current.contains(Commands.COMMAND_EVENT)) {
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
-                String openBracket = "\\(";
-                String closeBracket = "\\)";
-                String[] newDescriptions = descriptions[1].split(openBracket);
-                String date = newDescriptions[1].split(closeBracket)[0];
-                String[] dateSplits = date.split("at: ")[1].split(" ");
-                date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
-                String time = dateSplits[3] + dateSplits[4];
-                DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
-                DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
-                LocalDate newDate = LocalDate.parse(date, formatterDate);
-                LocalTime newTime = LocalTime.parse(time, formatterTime);
-                Task newTask = new Event(Commands.COMMAND_EVENT + newDescriptions[0],
-                        newDate, newTime, current.contains("[X]"));
+                Task newTask = generateTaskFromStorage(Commands.COMMAND_EVENT, descriptions, current.contains("[X]"));
                 tasks.addTasks(newTask);
             } else {
                 String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
-                String openBracket = "\\(";
-                String closeBracket = "\\)";
-                String[] newDescriptions = descriptions[1].split(openBracket);
-                String date = newDescriptions[1].split(closeBracket)[0];
-                String[] dateSplits = date.split("by: ")[1].split(" ");
-                date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
-                String time = dateSplits[3] + dateSplits[4];
-                DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
-                DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
-                LocalDate newDate = LocalDate.parse(date, formatterDate);
-                LocalTime newTime = LocalTime.parse(time, formatterTime);
-                Task newTask = new Deadline(Commands.COMMAND_DEADLINE + newDescriptions[0],
-                        newDate, newTime, current.contains("[X]"));
+                Task newTask = generateTaskFromStorage(Commands.COMMAND_DEADLINE, descriptions, current.contains("[X]"));
                 tasks.addTasks(newTask);
             }
         }
         return tasks;
     }
+
+    /**
+     * Returns a Task from file storage.
+     *
+     * @param command the command specifying if the task is event or deadline
+     * @param descriptions the description of the task split into an array of strings
+     * @param isDone whether the task is done
+     * @return a Task based on the arguments passed in
+     */
+    public Task generateTaskFromStorage(String command, String[] descriptions, boolean isDone) {
+        String[] newDescriptions = descriptions[1].split("\\(");
+        String date = newDescriptions[1].split("\\)")[0];
+        String[] dateSplits = date.split("at: ")[1].split(" ");
+        date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
+        String time = dateSplits[3] + dateSplits[4];
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
+        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
+        LocalDate newDate = LocalDate.parse(date, formatterDate);
+        LocalTime newTime = LocalTime.parse(time, formatterTime);
+        Task newTask;
+        if (command.equals(Commands.COMMAND_EVENT)) {
+            newTask = new Event(command + newDescriptions[0], newDate, newTime, isDone);
+        } else {
+            newTask = new Deadline(command + newDescriptions[0], newDate, newTime, isDone);
+        }
+        return newTask;
+    }
+
 }
