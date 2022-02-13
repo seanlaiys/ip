@@ -121,16 +121,19 @@ public class Storage {
             if (current.contains(Commands.COMMAND_TODO)) {
                 int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_TODO);
-                Task newTask = new ToDo(Commands.COMMAND_TODO + descriptions[1],
+                String[] newDescriptions = descriptions[1].split(" ");
+                Task newTask = new ToDo(Commands.COMMAND_TODO + newDescriptions[0],
                         current.contains("[X]"), priority);
                 tasks.addTasks(newTask);
-            } else if (current.contains(Commands.COMMAND_EVENT)) {
+            }
+            if (current.contains(Commands.COMMAND_EVENT)) {
                 int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_EVENT);
                 Task newTask = generateTaskFromStorage(Commands.COMMAND_EVENT,
                         descriptions, current.contains("[X]"), priority);
                 tasks.addTasks(newTask);
-            } else {
+            }
+            if (current.contains(Commands.COMMAND_DEADLINE)) {
                 int priority = extractPriority(current);
                 String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
                 Task newTask = generateTaskFromStorage(Commands.COMMAND_DEADLINE,

@@ -152,6 +152,9 @@ public class Parser {
                 throw new MissingDescriptionException();
             }
             String[] inputs = input.split("/by ");
+            if (inputs.length <= 1) {
+                throw new MissingDescriptionException();
+            }
             try {
                 isValidTime(inputs[1]);
                 isValidDate(inputs[1]);
@@ -169,6 +172,9 @@ public class Parser {
                 throw new MissingDescriptionException();
             }
             String[] inputs = input.split("/at ");
+            if (inputs.length <= 1) {
+                throw new MissingDescriptionException();
+            }
             try {
                 isValidTime(inputs[1]);
                 isValidDate(inputs[1]);
@@ -279,8 +285,12 @@ public class Parser {
      * @throws InvalidDateException if input date is invalid
      */
     public static void isValidTime(String input) throws InvalidDateException {
+        isValidDate(input);
         String[] dateSplits = input.split("/");
         String[] yearSplits = dateSplits[2].split(" ");
+        if (yearSplits.length != 2) {
+            throw new InvalidDateException();
+        }
         String[] timeSplits = yearSplits[1].split("");
         if (timeSplits.length != 4) {
             throw new InvalidDateException();
