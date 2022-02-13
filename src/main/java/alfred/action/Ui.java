@@ -130,6 +130,11 @@ public class Ui {
         output = BYE;
     }
 
+    /**
+     * Returns currently stored string to reply user.
+     *
+     * @return current output to print to user.
+     */
     public static String getOutput() {
         return output;
     }

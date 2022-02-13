@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import alfred.task.Task;
 
 /**
- *  Encapsulates a list containing Task objects. TaskList contains
- *  ArrayList
+ * Encapsulates a list containing Task objects. TaskList contains
+ * ArrayList
  */
 public class TaskList {
     private ArrayList<Task> tasks;

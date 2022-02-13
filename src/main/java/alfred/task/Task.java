@@ -2,9 +2,7 @@ package alfred.task;
 
 import java.time.LocalDate;
 /**
- *
- * This class encapsulates a Task and its status.
- *
+ * Encapsulates a Task and its status.
  */
 public abstract class Task implements Comparable<Task> {
     public static final String HIGH_PRIORITY = "Priority: !!!";

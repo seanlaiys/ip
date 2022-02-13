@@ -273,7 +273,7 @@ public class Parser {
     }
 
     /**
-     *Throws exception if a time input by user is invalid.
+     * Throws exception if a time input by user is invalid.
      *
      * @param input the String input of the LocalDate
      * @throws InvalidDateException if input date is invalid
@@ -288,7 +288,7 @@ public class Parser {
     }
 
     /**
-     *Throws exception if an index input by user is invalid.
+     * Throws exception if an index input by user is invalid.
      *
      * @param input the int input of index
      * @throws TasksOutOfBoundsException if input date is invalid
