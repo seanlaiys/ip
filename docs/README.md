@@ -25,13 +25,13 @@ can type fast, Alfred can get you managing your daily tasks faster than traditio
 ## Features
 ### Note
 Words in `UPPER_CASE` are the parameters to be supplied by the user.
-e.g. in `todo n/NAME`, `NAME` is a parameter which can be used as `todo n/throw party`.
+e.g. in `todo NAME`, `NAME` is a parameter which can be used as `todo throw party`.
 
 ### Adding a Deadline: `deadline`
 
 Adds a deadline to the task list.
 
-Format: `deadline n/NAME d/DATE`
+Format: `deadline NAME DATE`
 
 Example: `deadline project /by 18/02/2022 2359`
 
@@ -39,7 +39,7 @@ Example: `deadline project /by 18/02/2022 2359`
 
 Adds an event to the task list.
 
-Format: `event n/NAME d/DATE`
+Format: `event NAME DATE`
 
 Example: `event throw party /at 19/02/2022 0100`
 
@@ -47,7 +47,7 @@ Example: `event throw party /at 19/02/2022 0100`
 
 Adds a todo to the task list.
 
-Format: `todo n/NAME`
+Format: `todo NAME`
 
 Example: `todo read book`
 
@@ -57,7 +57,7 @@ Prints the list of the tasks as requested.
 
 Formats: 
 - `list`
-- `list /on d/DATE`
+- `list /on DATE`
 
 Examples: 
 - `list`
@@ -67,7 +67,7 @@ Examples:
 
 Prints the list of the tasks containing keyword input.
 
-Format: `find n/NAME`
+Format: `find NAME`
 
 Example: `find book`
 
@@ -75,7 +75,7 @@ Example: `find book`
 
 Marks a specified task on the tasklist as done.
 
-Format: `mark t/TASK_NUMBER`
+Format: `mark TASK_NUMBER`
 
 Example: `mark 1`
 
@@ -83,7 +83,7 @@ Example: `mark 1`
 
 Marks a specified task on the tasklist as not done.
 
-Format: `unmark t/TASK_NUMBER`
+Format: `unmark TASK_NUMBER`
 
 Example: `unmark 1`
 
@@ -91,7 +91,7 @@ Example: `unmark 1`
 
 Removes a specified task on the tasklist.
 
-Format: `delete t/TASK_NUMBER`
+Format: `delete TASK_NUMBER`
 
 Example: `delete 1`
 
@@ -99,7 +99,7 @@ Example: `delete 1`
 
 Associates a task with different priority levels: `low`, `medium`, `high`
 
-Format: `priority l/LEVEL t/TASK_NUMBER`
+Format: `priority LEVEL TASK_NUMBER`
 
 Example: `priority high 1`
 
