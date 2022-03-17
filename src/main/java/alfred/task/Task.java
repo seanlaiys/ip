@@ -8,8 +8,8 @@ public abstract class Task implements Comparable<Task> {
     public static final String HIGH_PRIORITY = "Priority: !!!";
     public static final String MEDIUM_PRIORITY = "Priority: !!";
     public static final String LOW_PRIORITY = "Priority: !";
-    protected static final String DONE = "[X]";
-    protected static final String NOT_DONE = "[ ]";
+    public static final String DONE = "[X]";
+    public static final String NOT_DONE = "[ ]";
     protected int priority;
     protected String task;
     protected boolean isDone;
@@ -77,6 +77,24 @@ public abstract class Task implements Comparable<Task> {
      */
     public String numToPriority() {
         switch (priority) {
+        case 1:
+            return " " + LOW_PRIORITY;
+        case 2:
+            return " " + MEDIUM_PRIORITY;
+        case 3:
+            return " " + HIGH_PRIORITY;
+        default:
+            return "";
+        }
+    }
+
+    /**
+     * Returns string representing priority of a task.
+     *
+     * @return string representing priority
+     */
+    public static String intToPriority(int p) {
+        switch (p) {
         case 1:
             return " " + LOW_PRIORITY;
         case 2:

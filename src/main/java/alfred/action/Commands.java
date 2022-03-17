@@ -15,8 +15,9 @@ public class Commands {
     public static final String COMMAND_EVENT = "event";
     public static final String COMMAND_DELETE = "delete";
     public static final String COMMAND_FIND = "find";
-    public static final String COMMAND_HIGH_PRIORITY = "priority high";
-    public static final String COMMAND_MEDIUM_PRIORITY = "priority medium";
-    public static final String COMMAND_LOW_PRIORITY = "priority low";
-    public static final String COMMAND_REMOVE_PRIORITY = "priority remove";
+    public static final String COMMAND_PRIORITY = "priority";
+    public static final String PRIORITY_HIGH = "high";
+    public static final String PRIORITY_MEDIUM = "medium";
+    public static final String PRIORITY_LOW = "low";
+    public static final String PRIORITY_REMOVE = "remove";
 }

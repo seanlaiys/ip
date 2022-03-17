@@ -4,13 +4,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import alfred.exception.AlfredException;
 import alfred.exception.EmptyInputException;
+import alfred.exception.ExcessKeywordsException;
+import alfred.exception.InvalidCommandException;
 import alfred.exception.InvalidDateException;
+import alfred.exception.InvalidDateTimeException;
 import alfred.exception.InvalidInputException;
-import alfred.exception.MissingDescriptionException;
+import alfred.exception.InvalidTimeException;
+import alfred.exception.StorageFailureException;
+import alfred.exception.TaskNotFoundException;
 import alfred.exception.TasksOutOfBoundsException;
 import alfred.task.Deadline;
 import alfred.task.Event;
@@ -36,200 +41,356 @@ public class Parser {
     /**
      * Takes in input from user which contains keywords to commands
      * to invoke different methods based on the command given.
+     *
+     * @param input the command input by user
+     * @param userInterface the user interface that prints the response based on input
      */
     public static void parseCommand(String input, Ui userInterface) throws AlfredException {
-        if (!currentStorage.isNewFile()) {
-            try {
-                currentTasks = currentStorage.fileToTaskList();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        if (input.contains(Commands.COMMAND_LIST)) {
-            if (input.contains("/on")) {
-                String[] inputs = input.split("/on ");
-                try {
-                    LocalDate date = getDate(inputs[1]);
-                    TaskList newTasks = currentTasks.getTasksByDate(date);
-                    userInterface.generateList(newTasks);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                userInterface.generateList(currentTasks);
-            }
-        } else if (input.contains(Commands.COMMAND_FIND)) {
-            String[] descriptions = input.split(Commands.COMMAND_FIND);
-            if (descriptions.length == 0) {
-                throw new EmptyInputException();
-            }
-            TaskList result = currentTasks.getTasksByKeyWord(descriptions[0]);
-            userInterface.generateList(result);
-        } else if (input.contains(Commands.COMMAND_BLAH)) {
-            userInterface.sayBlah();
-        } else if (input.contains(Commands.COMMAND_UNMARK)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.unmarkTask(taskNumber);
-            Task unmarked = currentTasks.getTask(taskNumber);
-            userInterface.sayUnmark(unmarked);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_MARK)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.markTask(taskNumber);
-            Task marked = currentTasks.getTask(taskNumber);
-            userInterface.sayMark(marked);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_HIGH_PRIORITY)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.setTaskPriority(taskNumber, 3);
-            Task newTask = currentTasks.getTask(taskNumber);
-            userInterface.sayPriority(newTask);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_MEDIUM_PRIORITY)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.setTaskPriority(taskNumber, 2);
-            Task newTask = currentTasks.getTask(taskNumber);
-            userInterface.sayPriority(newTask);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_LOW_PRIORITY)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.setTaskPriority(taskNumber, 1);
-            Task newTask = currentTasks.getTask(taskNumber);
-            userInterface.sayPriority(newTask);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_REMOVE_PRIORITY)) {
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            currentTasks.setTaskPriority(taskNumber, 0);
-            Task newTask = currentTasks.getTask(taskNumber);
-            userInterface.sayPriority(newTask);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_TODO)) {
-            String[] descriptions = input.split(Commands.COMMAND_TODO);
-            if (descriptions.length == 0) {
-                throw new MissingDescriptionException();
-            }
-            Task newTask = new ToDo(input);
-            currentTasks.addTasks(newTask);
-            userInterface.sayAdd(newTask, currentTasks);
-            try {
-                currentStorage.appendTaskToFile(newTask);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_DEADLINE)) {
-            String[] descriptions = input.split(Commands.COMMAND_DEADLINE);
-            if (descriptions.length == 0) {
-                throw new MissingDescriptionException();
-            }
-            String[] inputs = input.split("/by ");
-            if (inputs.length <= 1) {
-                throw new MissingDescriptionException();
-            }
-            try {
-                isValidTime(inputs[1]);
-                isValidDate(inputs[1]);
-                Task newTask = new Deadline(inputs[0], getDate(inputs[1]),
-                        getTime(inputs[1]));
-                currentTasks.addTasks(newTask);
-                userInterface.sayAdd(newTask, currentTasks);
-                currentStorage.appendTaskToFile(newTask);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_EVENT)) {
-            String[] descriptions = input.split(Commands.COMMAND_EVENT);
-            if (descriptions.length == 0) {
-                throw new MissingDescriptionException();
-            }
-            String[] inputs = input.split("/at ");
-            if (inputs.length <= 1) {
-                throw new MissingDescriptionException();
-            }
-            try {
-                isValidTime(inputs[1]);
-                isValidDate(inputs[1]);
-                Task newTask = new Event(inputs[0], getDate(inputs[1]),
-                        getTime(inputs[1]));
-                currentTasks.addTasks(newTask);
-                userInterface.sayAdd(newTask, currentTasks);
-                currentStorage.appendTaskToFile(newTask);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.contains(Commands.COMMAND_DELETE)) {
-            String[] descriptions = input.split(Commands.COMMAND_DELETE);
-            if (descriptions.length == 0) {
-                throw new EmptyInputException();
-            }
-            int taskNumber = findDigit(input);
-            isValidIndex(taskNumber);
-            Task removedTask = currentTasks.getTask(taskNumber);
-            currentTasks.removeTasks(taskNumber);
-            userInterface.sayDelete(removedTask, currentTasks);
-            try {
-                currentStorage.writeTasksToFile(currentTasks);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (input.equals("")) {
+        initialiseCurrentTasks();
+        String[] inputs = input.split(" ");
+        String commandWord = inputs[0];
+        switch (commandWord) {
+        case "":
             throw new EmptyInputException();
-        } else if (input.equals(Commands.COMMAND_BYE)) {
+        case Commands.COMMAND_BYE:
             userInterface.sayGoodbye();
-        } else {
+            break;
+        case Commands.COMMAND_LIST:
+            handleList(inputs, userInterface);
+            break;
+        case Commands.COMMAND_FIND:
+            handleFind(inputs, userInterface);
+            break;
+        case Commands.COMMAND_BLAH:
+            userInterface.sayBlah();
+            break;
+        case Commands.COMMAND_UNMARK:
+            handleUnmark(inputs, userInterface);
+            break;
+        case Commands.COMMAND_MARK:
+            handleMark(inputs, userInterface);
+            break;
+        case Commands.COMMAND_PRIORITY:
+            handlePriority(inputs, userInterface);
+            break;
+        case Commands.COMMAND_TODO:
+            handleToDo(input, userInterface);
+            break;
+        case Commands.COMMAND_DEADLINE:
+            handleDeadline(input, userInterface);
+            break;
+        case Commands.COMMAND_EVENT:
+            handleEvent(input, userInterface);
+            break;
+        case Commands.COMMAND_DELETE:
+            handleDelete(inputs, userInterface);
+            break;
+        default:
+            throw new InvalidCommandException();
+        }
+    }
+
+    /**
+     * Initialises the current tasks based on storage.
+     */
+    private static void initialiseCurrentTasks() throws AlfredException {
+        if (currentStorage.isNewFile()) {
+            return;
+        }
+        try {
+            currentTasks = currentStorage.fileToTaskList();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new alfred.exception.FileNotFoundException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface.
+     *
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleList(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length == 1) {
+            userInterface.generateList(currentTasks);
+            return;
+        }
+        String keyword = inputs[1];
+        switch (keyword) {
+        case "":
+            userInterface.generateList(currentTasks);
+            break;
+        case "/on":
+            if (inputs.length != 3) {
+                throw new InvalidDateException();
+            }
+            LocalDate date = getDate(inputs[2]);
+            TaskList newTasks = currentTasks.getTasksByDate(date);
+            userInterface.generateList(newTasks);
+            break;
+        default:
             throw new InvalidInputException();
         }
     }
 
     /**
-     * Returns the index of the task in the current action.TaskList
-     * based on the input provided by the user containing a digit.
+     * Updates the list onto the user interface based on keyword.
      *
-     * @return an int index of the task
-     * @throws EmptyInputException if input does not contain an index
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
      */
-    public static int findDigit(String input) throws EmptyInputException {
-        char[] inputChars = input.toCharArray();
-        String number = "";
-        for (char ch : inputChars) {
-            if (Character.isDigit(ch)) {
-                number += ch;
-            }
+    private static void handleFind(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length == 1) {
+            throw new InvalidCommandException();
         }
-        if (number.equals("")) {
+        if (inputs.length != 2) {
+            throw new ExcessKeywordsException();
+        }
+        String keyword = inputs[1];
+        if (keyword.equals(" ") || keyword.equals("")) {
             throw new EmptyInputException();
         }
-        int digit = Integer.parseInt(number);
-        return digit - 1;
+        TaskList result = currentTasks.getTasksByKeyWord(keyword);
+        if (result.getSize() == 0) {
+            throw new TaskNotFoundException();
+        }
+        userInterface.generateList(result);
+    }
+
+    /**
+     * Updates the list onto the user interface with a specified task unmarked.
+     *
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleUnmark(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        if (inputs.length != 2) {
+            throw new ExcessKeywordsException();
+        }
+        String keyword = inputs[1];
+        int index = getIndex(keyword);
+        if (currentTasks.getSize() <= index) {
+            throw new TasksOutOfBoundsException();
+        }
+        currentTasks.unmarkTask(index);
+        Task unmarked = currentTasks.getTask(index);
+        userInterface.sayUnmark(unmarked);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a specified task marked.
+     *
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleMark(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        if (inputs.length != 2) {
+            throw new ExcessKeywordsException();
+        }
+        String keyword = inputs[1];
+        int index = getIndex(keyword);
+        if (currentTasks.getSize() <= index) {
+            throw new TasksOutOfBoundsException();
+        }
+        currentTasks.markTask(index);
+        Task marked = currentTasks.getTask(index);
+        userInterface.sayMark(marked);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a new ToDo task.
+     *
+     * @param input the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleToDo(String input, Ui userInterface) throws AlfredException {
+        String[] inputs = input.split(" ");
+        String description = input.replace(Commands.COMMAND_TODO + " ", "");
+        if (description.equals("") || inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        Task newTask = new ToDo(description);
+        currentTasks.addTasks(newTask);
+        userInterface.sayAdd(newTask, currentTasks);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a new Deadline task.
+     *
+     * @param input the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleDeadline(String input, Ui userInterface) throws AlfredException {
+        String[] inputs = input.split(" ");
+        String description = input.replace(Commands.COMMAND_DEADLINE + " ", "");
+        if (description.equals("") || inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        String[] descriptions = description.split(" /by ");
+        if (descriptions.length != 2) {
+            throw new InvalidCommandException();
+        }
+        String[] dateTime = descriptions[1].split(" ");
+        if (dateTime.length != 2) {
+            throw new InvalidDateTimeException();
+        }
+        description = descriptions[0];
+        LocalDate date = getDate(dateTime[0]);
+        LocalTime time = getTime(dateTime[1]);
+        Task newTask = new Deadline(description, date, time);
+        currentTasks.addTasks(newTask);
+        userInterface.sayAdd(newTask, currentTasks);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a new Event task.
+     *
+     * @param input the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleEvent(String input, Ui userInterface) throws AlfredException {
+        String[] inputs = input.split(" ");
+        String description = input.replace(Commands.COMMAND_EVENT + " ", "");
+        if (description.equals("") || inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        String[] descriptions = description.split(" /at ");
+        if (descriptions.length != 2) {
+            throw new InvalidCommandException();
+        }
+        String[] dateTime = descriptions[1].split(" ");
+        if (dateTime.length != 2) {
+            throw new InvalidDateTimeException();
+        }
+        description = descriptions[0];
+        LocalDate date = getDate(dateTime[0]);
+        LocalTime time = getTime(dateTime[1]);
+        Task newTask = new Event(description, date, time);
+        currentTasks.addTasks(newTask);
+        userInterface.sayAdd(newTask, currentTasks);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a specified task removed.
+     *
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handleDelete(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length == 1) {
+            throw new InvalidCommandException();
+        }
+        if (inputs.length != 2) {
+            throw new ExcessKeywordsException();
+        }
+        String keyword = inputs[1];
+        int index = getIndex(keyword);
+        if (currentTasks.getSize() <= index) {
+            throw new TasksOutOfBoundsException();
+        }
+        Task removedTask = currentTasks.getTask(index);
+        currentTasks.removeTasks(index);
+        userInterface.sayDelete(removedTask, currentTasks);
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the list onto the user interface with a
+     * specified priority added to a specified task.
+     *
+     * @param inputs the command input by user
+     * @param userInterface the user interface that prints the response based on input
+     */
+    private static void handlePriority(String[] inputs, Ui userInterface) throws AlfredException {
+        if (inputs.length < 3) {
+            throw new InvalidCommandException();
+        }
+        if (inputs.length != 3) {
+            throw new ExcessKeywordsException();
+        }
+        String priority = inputs[1];
+        int index = getIndex(inputs[2]);
+        if (currentTasks.getSize() <= index) {
+            throw new TasksOutOfBoundsException();
+        }
+        currentTasks = parsePriority(priority, index, currentTasks);
+        userInterface.sayPriority(currentTasks.getTask(index));
+        try {
+            currentStorage.writeTasksToFile(currentTasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new StorageFailureException();
+        }
+    }
+
+    /**
+     * Updates the task list with a specified priority to add to a specified task.
+     *
+     * @param priority the priority input by user
+     * @param index the index of the specified task
+     * @param currentTasks the current task list
+     */
+    private static TaskList parsePriority(String priority, int index, TaskList currentTasks)
+            throws AlfredException {
+        switch (priority) {
+        case Commands.PRIORITY_HIGH:
+            currentTasks.setTaskPriority(index, 3);
+            break;
+        case Commands.PRIORITY_MEDIUM:
+            currentTasks.setTaskPriority(index, 2);
+            break;
+        case Commands.PRIORITY_LOW:
+            currentTasks.setTaskPriority(index, 1);
+            break;
+        case Commands.PRIORITY_REMOVE:
+            currentTasks.setTaskPriority(index, 0);
+            break;
+        default:
+            throw new InvalidCommandException();
+        }
+        return currentTasks;
     }
 
     /**
@@ -237,80 +398,66 @@ public class Parser {
      *
      * @param input the String input of the LocalDate
      * @return a LocalDate object of the date input by user
-     * @throws IOException if input is invalid
+     * @throws InvalidDateException if input is invalid
      */
-    public static LocalDate getDate(String input) throws IOException {
+    private static LocalDate getDate(String input) throws InvalidDateException {
+        if (input == null || input.equals("")) {
+            throw new InvalidDateException();
+        }
         String[] dateSplits = input.split("/");
-        String[] yearSplits = dateSplits[2].split(" ");
-        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy M d");
-        return LocalDate.parse(yearSplits[0] + " " + dateSplits[1] + " "
-                + dateSplits[0], formatterDate);
+        if (dateSplits.length != 3) {
+            throw new InvalidDateException();
+        }
+        String date = dateSplits[2] + "-" + dateSplits[1] + "-" + dateSplits[0];
+        try {
+            LocalDate result = LocalDate.parse(date);
+            return result;
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateException();
+        }
     }
 
     /**
      * Returns the time based on the input typed in by user.
      *
-     * @param input the String input of the LocalDate
+     * @param input the String input of the LocalTime
      * @return a LocalTime object of the date input by user
-     * @throws IOException if input is invalid
+     * @throws InvalidTimeException if input is invalid
      */
-    public static LocalTime getTime(String input) throws IOException {
-        String[] dateSplits = input.split("/");
-        String[] yearSplits = dateSplits[2].split(" ");
-        String[] timeSplits = yearSplits[1].split("");
-        return LocalTime.parse(timeSplits[0] + timeSplits[1] + ":"
-                + timeSplits[2] + timeSplits[3]);
-    }
-
-    /**
-     * Throws exception if a date input by user is invalid.
-     *
-     * @param input the String input of the LocalDate
-     * @throws InvalidDateException if input date is invalid
-     */
-    public static void isValidDate(String input) throws InvalidDateException {
-        String[] dateSplits = input.split("/");
-        if (dateSplits.length < 3) {
-            throw new InvalidDateException();
+    private static LocalTime getTime(String input) throws InvalidTimeException {
+        if (input == null || input.equals("")) {
+            throw new InvalidTimeException();
         }
-        if (dateSplits[2].split(" ")[0].split("").length != 4) {
-            throw new InvalidDateException();
-        }
-    }
-
-    /**
-     * Throws exception if a time input by user is invalid.
-     *
-     * @param input the String input of the LocalDate
-     * @throws InvalidDateException if input date is invalid
-     */
-    public static void isValidTime(String input) throws InvalidDateException {
-        isValidDate(input);
-        String[] dateSplits = input.split("/");
-        String[] yearSplits = dateSplits[2].split(" ");
-        if (yearSplits.length != 2) {
-            throw new InvalidDateException();
-        }
-        String[] timeSplits = yearSplits[1].split("");
+        String[] timeSplits = input.split("");
         if (timeSplits.length != 4) {
-            throw new InvalidDateException();
+            throw new InvalidTimeException();
+        }
+        try {
+            LocalTime result = LocalTime.parse(timeSplits[0] + timeSplits[1]
+                    + ":" + timeSplits[2] + timeSplits[3]);
+            return result;
+        } catch (DateTimeParseException e) {
+            throw new InvalidTimeException();
         }
     }
 
     /**
-     * Throws exception if an index input by user is invalid.
+     * Returns the index based on the input typed in by user.
      *
-     * @param input the int input of index
-     * @throws TasksOutOfBoundsException if input date is invalid
+     * @param input the String input of the LocalDate
+     * @return the integer of the index of the task specified by user
+     * @throws AlfredException if input is invalid
      */
-    public static void isValidIndex(int input) throws TasksOutOfBoundsException {
-        if (currentTasks.getSize() <= input) {
+    private static int getIndex(String input) throws AlfredException {
+        int index = -1;
+        try {
+            index = Integer.parseInt(input) - 1;
+        } catch (NumberFormatException e) {
+            throw new InvalidCommandException();
+        }
+        if (index < 0) {
             throw new TasksOutOfBoundsException();
         }
-        if (input < 0) {
-            throw new TasksOutOfBoundsException();
-        }
+        return index;
     }
-
-
 }

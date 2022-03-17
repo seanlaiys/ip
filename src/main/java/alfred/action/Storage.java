@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import alfred.exception.StorageFailureException;
 import alfred.task.Deadline;
 import alfred.task.Event;
 import alfred.task.Task;
@@ -19,6 +20,9 @@ import alfred.task.ToDo;
  */
 public class Storage {
 
+    private static final String TODO_KEY = "[T]";
+    private static final String DEADLINE_KEY = "[D]";
+    private static final String EVENT_KEY = "[E]";
     private File taskFile;
     private boolean isNew;
 
@@ -111,68 +115,173 @@ public class Storage {
      *
      * @throws FileNotFoundException if a TaskFile could not be found
      */
-    public TaskList fileToTaskList() throws FileNotFoundException {
+    public TaskList fileToTaskList() throws FileNotFoundException, StorageFailureException {
         assert taskFile != null : "taskFile cannot be null";
         Scanner s = new Scanner(taskFile); // create a Scanner using the File as the source
         String current;
         TaskList tasks = new TaskList();
         while (s.hasNext()) {
             current = s.nextLine();
-            if (current.contains(Commands.COMMAND_TODO)) {
-                int priority = extractPriority(current);
-                String[] descriptions = current.split(Commands.COMMAND_TODO);
-                String[] newDescriptions = descriptions[1].split(" ");
-                Task newTask = new ToDo(Commands.COMMAND_TODO + newDescriptions[0],
-                        current.contains("[X]"), priority);
-                tasks.addTasks(newTask);
-            }
-            if (current.contains(Commands.COMMAND_EVENT)) {
-                int priority = extractPriority(current);
-                String[] descriptions = current.split(Commands.COMMAND_EVENT);
-                Task newTask = generateTaskFromStorage(Commands.COMMAND_EVENT,
-                        descriptions, current.contains("[X]"), priority);
-                tasks.addTasks(newTask);
-            }
-            if (current.contains(Commands.COMMAND_DEADLINE)) {
-                int priority = extractPriority(current);
-                String[] descriptions = current.split(Commands.COMMAND_DEADLINE);
-                Task newTask = generateTaskFromStorage(Commands.COMMAND_DEADLINE,
-                        descriptions, current.contains("[X]"), priority);
-                tasks.addTasks(newTask);
+            String taskWord = current.substring(0, 3);
+            switch (taskWord) {
+            case TODO_KEY:
+                Task newToDo = handleToDo(current);
+                tasks.addTasks(newToDo);
+                break;
+            case EVENT_KEY:
+                Task newEvent = handleEvent(current);
+                tasks.addTasks(newEvent);
+                break;
+            case DEADLINE_KEY:
+                Task newDeadline = handleDeadline(current);
+                tasks.addTasks(newDeadline);
+                break;
+            default:
+                throw new StorageFailureException();
             }
         }
         return tasks;
     }
 
     /**
-     * Returns a Task from file storage.
+     * Returns a ToDo task from file storage.
      *
-     * @param command the command specifying if the task is event or deadline
-     * @param descriptions the description of the task split into an array of strings
-     * @param isDone whether the task is done
-     * @param priority priority number of task
+     * @param input the input line from storage
      * @return a Task based on the arguments passed in
      */
-    private Task generateTaskFromStorage(String command, String[] descriptions,
-                                         boolean isDone, int priority) {
-        String[] newDescriptions = descriptions[1].split("\\(");
-        String date = newDescriptions[1].split("\\)")[0];
-        String[] dateSplits = date.split("at: ")[1].split(" ");
-        date = dateSplits[0] + " " + dateSplits[1] + " " + dateSplits[2];
-        String time = dateSplits[3] + dateSplits[4];
-        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM d yyyy");
-        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("hh:mma");
-        LocalDate newDate = LocalDate.parse(date, formatterDate);
-        LocalTime newTime = LocalTime.parse(time, formatterTime);
-        Task newTask;
-        if (command.equals(Commands.COMMAND_EVENT)) {
-            newTask = new Event(command + newDescriptions[0], newDate, newTime,
-                    isDone, priority);
-        } else {
-            newTask = new Deadline(command + newDescriptions[0], newDate, newTime,
-                    isDone, priority);
+    private Task handleToDo(String input) {
+        String description = input.replace(TODO_KEY, "");
+        boolean done = false;
+        if (description.contains(Task.DONE)) {
+            done = true;
+            description = description.replace(Task.DONE + " ", "");
         }
-        return newTask;
+        description = description.replace(Task.NOT_DONE + " ", "");
+        int priority = extractPriority(description);
+        description = description.replace(Task.intToPriority(priority), "");
+        return new ToDo(description, done, priority);
+    }
+
+    /**
+     * Returns an Event task from file storage.
+     *
+     * @param input the input line from storage
+     * @return a Task based on the arguments passed in
+     */
+    private Task handleEvent(String input) {
+        String event = input.replace(EVENT_KEY, "");
+        boolean done = false;
+        if (event.contains(Task.DONE)) {
+            done = true;
+            event = event.replace(Task.DONE + " ", "");
+        }
+        event = event.replace(Task.NOT_DONE + " ", "");
+        int priority = extractPriority(event);
+        event = event.replace(Task.intToPriority(priority), "");
+        String description = extractEvent(event);
+        LocalDate date = extractEventDate(event);
+        LocalTime time = extractEventTime(event);
+        return new Event(description, date, time, done, priority);
+    }
+
+    /**
+     * Returns the event description from file storage.
+     *
+     * @param input the input line from storage
+     * @return a description String based on the input
+     */
+    private String extractEvent(String input) {
+        String[] inputs = input.split(" \\(at: ");
+        return inputs[0];
+    }
+
+    /**
+     * Returns the event date from file storage.
+     *
+     * @param input the input line from storage
+     * @return a LocalDate based on the input
+     */
+    private LocalDate extractEventDate(String input) {
+        String[] inputs = input.split(" \\(at: ");
+        String[] dateTime = inputs[1].split(" ");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM-d-yyyy");
+        String date = dateTime[0] + "-" + dateTime[1] + "-" + dateTime[2];
+        return LocalDate.parse(date, formatterDate);
+    }
+
+    /**
+     * Returns the event time from file storage.
+     *
+     * @param input the input line from storage
+     * @return a LocalTime based on the input
+     */
+    private LocalTime extractEventTime(String input) {
+        String[] inputs = input.split(" \\(at: ");
+        String[] dateTime = inputs[1].split(" ");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("hh:mma");
+        String time = dateTime[3] + dateTime[4].substring(0, 2);
+        return LocalTime.parse(time, formatterDate);
+    }
+
+    /**
+     * Returns a Deadline Task from file storage.
+     *
+     * @param input the input line from storage
+     * @return a Task based on the arguments passed in
+     */
+    private Task handleDeadline(String input) {
+        String deadline = input.replace(DEADLINE_KEY, "");
+        boolean done = false;
+        if (deadline.contains(Task.DONE)) {
+            done = true;
+            deadline = deadline.replace(Task.DONE + " ", "");
+        }
+        deadline = deadline.replace(Task.NOT_DONE + " ", "");
+        int priority = extractPriority(deadline);
+        deadline = deadline.replace(Task.intToPriority(priority), "");
+        String description = extractDeadline(deadline);
+        LocalDate date = extractDeadlineDate(deadline);
+        LocalTime time = extractDeadlineTime(deadline);
+        return new Deadline(description, date, time, done, priority);
+    }
+
+    /**
+     * Returns the deadline description from file storage.
+     *
+     * @param input the input line from storage
+     * @return a description String based on the input
+     */
+    private String extractDeadline(String input) {
+        String[] inputs = input.split(" \\(by: ");
+        return inputs[0];
+    }
+
+    /**
+     * Returns the deadline date from file storage.
+     *
+     * @param input the input line from storage
+     * @return a LocalDate based on the input
+     */
+    private LocalDate extractDeadlineDate(String input) {
+        String[] inputs = input.split(" \\(by: ");
+        String[] dateTime = inputs[1].split(" ");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("MMM-d-yyyy");
+        String date = dateTime[0] + "-" + dateTime[1] + "-" + dateTime[2];
+        return LocalDate.parse(date, formatterDate);
+    }
+
+    /**
+     * Returns the deadline time from file storage.
+     *
+     * @param input the input line from storage
+     * @return a LocalTime based on the input
+     */
+    private LocalTime extractDeadlineTime(String input) {
+        String[] inputs = input.split(" \\(by: ");
+        String[] dateTime = inputs[1].split(" ");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("hh:mma");
+        String time = dateTime[3] + dateTime[4].substring(0, 2);
+        return LocalTime.parse(time, formatterDate);
     }
 
     /**

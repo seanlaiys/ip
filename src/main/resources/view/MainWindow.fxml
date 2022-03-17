@@ -9,14 +9,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: #282e3c;" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="alfred.main.MainWindow">
     <children>
-        <TextField fx:id="userInput" layoutX="3.0" layoutY="559.0" onAction="#handleUserInput" prefHeight="41.0" prefWidth="324.0" promptText="Enter Text Here" style="-fx-background-color: #505c7c; -fx-pref-height: 40; -fx-pref-width: 320; -fx-background-radius: 5; -fx-text-fill: white;" AnchorPane.bottomAnchor="1.0" />
-        <Button fx:id="sendButton" layoutX="327.0" layoutY="561.0" mnemonicParsing="false" onAction="#handleUserInput" prefHeight="41.0" prefWidth="76.0" style="-fx-background-color: #242424; -fx-font-family: Helvetica; -fx-pref-width: 70; -fx-pref-height: 35; -fx-background-radius: 5;" text="Send" textFill="#fdff00">
+        <TextField fx:id="userInput" layoutX="3.0" layoutY="559.0" onAction="#handleUserInput" prefHeight="41.0" prefWidth="324.0" promptText="Enter Text Here" style="-fx-background-color: #505c7c; -fx-pref-height: 40; -fx-pref-width: 320; -fx-background-radius: 5; -fx-text-fill: white;" AnchorPane.bottomAnchor="2.0" />
+        <Button fx:id="sendButton" layoutX="327.0" layoutY="559.0" mnemonicParsing="false" onAction="#handleUserInput" prefHeight="41.0" prefWidth="76.0" style="-fx-background-color: #242424; -fx-font-family: Helvetica; -fx-pref-width: 70; -fx-pref-height: 35; -fx-background-radius: 5;" AnchorPane.bottomAnchor="4.0" text="Send" textFill="#fdff00">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Button>
-        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hvalue="1.0" prefHeight="557.0" prefWidth="400.0" style="-fx-background-color: #282e3c;" vvalue="1.0">
+        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hvalue="1.0" maxHeight="-Infinity" prefHeight="557.0" prefWidth="400.0" style="-fx-background-color: #282e3c; -fx-border-color: white" vvalue="1.0">
             <content>
-                <VBox fx:id="dialogContainer" prefHeight="552.0" prefWidth="388.0" style="-fx-background-color: #242424;" />
+                <VBox fx:id="dialogContainer" maxHeight="-Infinity" prefHeight="552.0" prefWidth="388.0" style="-fx-background-color: #242424;" />
             </content>
         </ScrollPane>
     </children>
