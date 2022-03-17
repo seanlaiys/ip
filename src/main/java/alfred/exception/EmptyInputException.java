@@ -10,7 +10,6 @@ public class EmptyInputException extends AlfredException {
 
     /**
      * Creates a new exception object for empty input.
-     *
      */
     public EmptyInputException() {
         super(NO_DESCRIPTION);

@@ -58,7 +58,7 @@ public class Event extends Task {
     public String toString() {
         String status = isDone ? Task.DONE : Task.NOT_DONE;
         String priority = super.numToPriority();
-        return TYPE + status + " " + task + "(at: "
+        return TYPE + status + " " + task + " (at: "
                 + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
                 + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")" + priority;
     }

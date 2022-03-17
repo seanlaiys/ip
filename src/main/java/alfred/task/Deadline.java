@@ -60,7 +60,7 @@ public class Deadline extends Task {
     public String toString() {
         String status = isDone ? Task.DONE : Task.NOT_DONE;
         String priority = super.numToPriority();
-        return TYPE + status + " " + task + "(by: "
+        return TYPE + status + " " + task + " (by: "
                 + date.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
                 + " " + time.format(DateTimeFormatter.ofPattern("hh:mm a")) + ")" + priority;
     }

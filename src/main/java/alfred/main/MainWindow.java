@@ -2,6 +2,8 @@ package alfred.main;
 
 import alfred.action.Commands;
 import alfred.action.Ui;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -9,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+
 /**
  * Controller for MainWindow. Provides the layout for the other controls.
  */
@@ -66,7 +70,9 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getAlfredDialog(response, alfredImage)
         );
         if (input.equals(Commands.COMMAND_BYE)) {
-            System.exit(0);
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(done -> Platform.exit());
+            delay.play();
         }
         userInput.clear();
     }
