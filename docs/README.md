@@ -13,7 +13,7 @@ can type fast, Alfred can get you managing your daily tasks faster than traditio
   - [Marking a task not done](#marking-a-task-not-done-unmark): `unmark`
   - [Removing a task](#removing-a-task-delete): `delete`
   - [Prioritising a task](#prioritising-a-task-priority): `priority`
-  - [Exiting](#exiting-exit): `bye`
+  - [Exiting](#exiting-bye): `bye`
   - [Saving the data]()
 
 ## Quick Start
