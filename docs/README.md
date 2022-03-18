@@ -103,11 +103,11 @@ Format: `priority LEVEL TASK_NUMBER`
 
 Example: `priority high 1`
 
-### Exiting: `exit`
+### Exiting: `bye`
 
 Exits the program.
 
-Format: `exit`
+Format: `bye`
 
 ### Saving the data
 
